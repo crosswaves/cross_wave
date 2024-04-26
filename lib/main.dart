@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'presentation/archive_screen.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'home_and_talk/home.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+void main() => runApp(const App());
+
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Talk',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+
+        primarySwatch: Colors.amber,
       ),
-      home: ArchiveScreen(),
+      home: const Home(),
+
     );
   }
 }
