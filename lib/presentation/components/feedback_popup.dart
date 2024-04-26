@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../feedback_screen.dart';
 
-class PopupFeedback extends StatefulWidget {
+class FeedbackPopup extends StatefulWidget {
   @override
-  PopupFeedbackState createState() => PopupFeedbackState();
+  FeedbackPopupState createState() => FeedbackPopupState();
 }
 
-class PopupFeedbackState extends State<PopupFeedback> {
+class FeedbackPopupState extends State<FeedbackPopup> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

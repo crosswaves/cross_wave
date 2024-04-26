@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../data/domain/conversation.dart';
-import 'components/popup_feedback.dart';
-import 'components/conversation.dart';
+import '../data/domain/model/conversation.dart';
+import 'components/feedback_popup.dart';
+import 'components/conversation_card.dart';
 
 class ConversationScreen extends StatelessWidget {
   const ConversationScreen({super.key});
@@ -64,7 +64,7 @@ class ConversationScreen extends StatelessWidget {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => PopupFeedback(),
+                  builder: (context) => FeedbackPopup(),
                 );
               }),
           SizedBox(
@@ -78,7 +78,7 @@ class ConversationScreen extends StatelessWidget {
             itemCount: conversations.length,
             itemBuilder: (context, index) {
               final conversation = conversations[index];
-              return CardConversation(conversation: conversation);
+              return ConversationCard(conversation: conversation);
             },
           ),
         ],

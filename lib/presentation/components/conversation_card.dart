@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../data/domain/conversation.dart';
+import '../../data/domain/model/conversation.dart';
 
-class CardConversation extends StatelessWidget {
+class ConversationCard extends StatelessWidget {
   final Conversation conversation;
 
-  const CardConversation({super.key, required this.conversation});
+  const ConversationCard({super.key, required this.conversation});
 
   @override
   Widget build(BuildContext context) {
