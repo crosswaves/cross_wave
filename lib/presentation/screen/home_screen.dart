@@ -1,8 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
-import '../../auth_utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -86,12 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(width: 20), // 사각형들 사이의 간격
                 TextButton(
-                  onPressed: () async {
-                    // 로그아웃을 호출하여 로그인 상태를 false로 설정합니다.
-                    await AuthUtils.logout();
-                    // 로그인 화면으로 이동합니다.
-                    context.go('/login');
-                  },
+                  onPressed: () async {},
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.amber,
                     minimumSize: const Size(75, 125),

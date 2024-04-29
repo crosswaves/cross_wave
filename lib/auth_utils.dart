@@ -18,7 +18,7 @@ class AuthUtils {
 
   static Future<bool> getFirstLoginCompleted() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('firstLoginCompleted') ?? true;
+    return prefs.getBool('firstLoginCompleted') ?? false;
   }
 
   // 로그아웃 기능을 추가합니다.
