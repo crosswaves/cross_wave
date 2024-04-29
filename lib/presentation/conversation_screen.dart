@@ -64,10 +64,10 @@ class ConversationScreen extends StatelessWidget {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => FeedbackPopup(),
+                  builder: (context) => const FeedbackPopup(),
                 );
               }),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
         ],

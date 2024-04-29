@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-class PaymentWidget extends StatelessWidget {
-  const PaymentWidget({super.key});
+import 'home_screen.dart';
+
+class PayCardScreen extends StatelessWidget {
+  const PayCardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +70,12 @@ class PaymentWidget extends StatelessWidget {
                           onPressed: () {
                             // 여기에 결제 처리 로직 추가
                             Navigator.of(context).pop();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const HomeScreen(),
+                              ),
+                            );
                           },
                         ),
                       ],
