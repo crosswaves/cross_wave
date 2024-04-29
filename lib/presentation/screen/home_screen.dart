@@ -21,9 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: Row(
+              child: const Row(
                 children: [
-                  const Text('프리미엄 구독하기',
+                  Text('프리미엄 구독하기',
                       style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.attach_money,
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () {
                       Navigator.push(
                         context, // Use the provided context to push the new route
-                        MaterialPageRoute(builder: (context) => TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
+                        MaterialPageRoute(builder: (context) => const TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
                       );
                     },
                     child: const Text(

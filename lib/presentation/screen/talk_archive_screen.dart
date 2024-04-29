@@ -11,14 +11,14 @@ class TalkArchiveScreen extends StatelessWidget {
         title: const Text('이전 대화 목록'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context), // Navigate back to HomeScreen
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: ListView(
           children: List.generate(
-            20, // Generate 5 instances of CardConversation, change the number as needed
+            20,
             (index) => const ConversationList(),
           ),
         ),
