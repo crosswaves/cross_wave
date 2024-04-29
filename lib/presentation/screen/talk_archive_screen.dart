@@ -11,7 +11,7 @@ class TalkArchiveScreen extends StatelessWidget {
         title: const Text('이전 대화 목록'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {}, // onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context), // Navigate back to HomeScreen
         ),
       ),
       body: Padding(
