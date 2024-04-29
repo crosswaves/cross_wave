@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speak_talk/presentation/screen/z_logic.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,10 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: Row(
+              child: const Row(
                 children: [
-                  const Text('프리미엄 구독하기',
-                      style: TextStyle(color: Colors.white)),
+                  Text('프리미엄 구독하기', style: TextStyle(color: Colors.white)),
                   Icon(
                     Icons.attach_money,
                     color: Colors.white,
@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Column(
+                  const Column(
                     children: [
                       Text(
                         '나의 영어 레벨',
@@ -153,7 +153,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Logout()));
+                    },
                     child: const Text(
                       '지난 학습 보기',
                       style: TextStyle(
@@ -186,7 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Container(
                 width: 350, // Container의 폭
                 height: 200, // Container의 높이
@@ -228,24 +235,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     barGroups: List.generate(
                         7,
-                            (index) => BarChartGroupData(
-                          x: index,
-                          barRods: [
-                            BarChartRodData(
-                              toY: index + 1, // Y값 (높이)
-                              color: Colors.amber,
-                            )
-                          ],
-                        )),
+                        (index) => BarChartGroupData(
+                              x: index,
+                              barRods: [
+                                BarChartRodData(
+                                  toY: index + 1, // Y값 (높이)
+                                  color: Colors.amber,
+                                )
+                              ],
+                            )),
                   ),
                 ),
               ),
-              SizedBox(height: 100),
+              const SizedBox(height: 100),
             ],
           ),
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -273,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
         selectedItemColor: Colors.green,
         showUnselectedLabels: true,
         selectedLabelStyle:
-        const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         unselectedItemColor: Colors.grey,
         currentIndex: 2,
         onTap: (index) {
