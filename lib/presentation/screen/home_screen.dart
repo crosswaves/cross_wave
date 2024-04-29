@@ -1,19 +1,104 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speak_talk/presentation/screen/z_logic.dart';
-
-import 'talk_archive_screen.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/services.dart';
+import 'info_screen.dart';
+import 'z_speak_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+  late List<Widget> _widgetOptions;
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    _showExitConfirmationDialog();
+    return true;
+  }
+
+  void _showExitConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('앱 종료'),
+        content: const Text('앱을 종료하시겠습니까?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('x'),
+          ),
+          TextButton(
+            onPressed: () {
+              SystemNavigator.pop();
+            },
+            child: const Text('o'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetOptions = [
+      buildHomeTab(),
+      const SpeakScreen(),
+      const InfoScreen(),
+    ];
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_box),
+            label: 'Speak',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.more_horiz),
+            label: 'Info',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.green,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+
+  Widget buildHomeTab() {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFC2CFF2),
@@ -48,27 +133,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: Column(
             children: [
-              const SizedBox(
-                height: 25,
-              ),
+              const SizedBox(height: 25),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Container(
-                  //   width: 150, // 원의 폭
-                  //   height: 150, // 원의 높이
-                  //   decoration: const BoxDecoration(
-                  //     color: Colors.red, // 원의 색상
-                  //     shape: BoxShape.circle, // 원 형태
-                  //   ),
-                  // ),
                   CircleAvatar(
                     backgroundImage: NetworkImage(
                         'https://entertainimg.kbsmedia.co.kr/cms/uploads/PERSON_20230425100142_a6929970038832dc461ad8ee40ef52e4.png'),
                     radius: 50,
                     backgroundColor: Colors.red,
                   ),
-                  SizedBox(width: 20), // 원과 사각형 사이의 간격
+                  SizedBox(width: 20),
                   Column(
                     children: [
                       Text(
@@ -81,34 +156,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  // const SizedBox(width: 20), // 사각형들 사이의 간격
-                  // TextButton(
-                  //   onPressed: () async {
-                  //     // 로그아웃을 호출하여 로그인 상태를 false로 설정합니다.
-                  //     await AuthUtils.logout();
-                  //     // 로그인 화면으로 이동합니다.
-                  //     context.go('/login');
-                  //   },
-                  //   style: TextButton.styleFrom(
-                  //     backgroundColor: Colors.amber,
-                  //     minimumSize: const Size(75, 125),
-                  //   ),
-                  //   child: const Text(
-                  //     'Logout',
-                  //     style: TextStyle(color: Colors.white),
-                  //   ),
-                  // ),
                 ],
               ),
-              const SizedBox(
-                height: 25,
-              ),
+              const SizedBox(height: 25),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 30,
-                  ),
+                  SizedBox(width: 30),
                   SizedBox(
                     width: 200,
                     height: 25,
@@ -123,9 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               const SizedBox(
                 width: 350,
                 height: 10,
@@ -135,9 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
                 ),
               ),
-              const SizedBox(
-                height: 50,
-              ),
+              const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -156,10 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context, // Use the provided context to push the new route
-                        MaterialPageRoute(builder: (context) => const TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
-                      );
+                      // 화면 전환 로직이 필요할 경우 여기에 추가
                     },
                     child: const Text(
                       '지난 학습 보기',
@@ -170,15 +217,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 50,
-              ),
+              const SizedBox(height: 50),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: 25,
-                  ),
+                  SizedBox(width: 25),
                   SizedBox(
                     width: 100,
                     height: 25,
@@ -193,21 +236,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Container(
-                width: 350, // Container의 폭
-                height: 200, // Container의 높이
-                color: Colors.blue, // Container의 색상
+                width: 350,
+                height: 200,
+                color: Colors.blue,
                 child: BarChart(
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
                     maxY: 9,
-                    // Y축의 최대값
-                    barTouchData: BarTouchData(
-                      enabled: false,
-                    ),
+                    barTouchData: BarTouchData(enabled: false),
                     titlesData: FlTitlesData(
                       show: true,
                       rightTitles: const AxisTitles(
@@ -232,20 +270,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           sideTitles: SideTitles(showTitles: false)),
                     ),
                     gridData: const FlGridData(show: false),
-                    borderData: FlBorderData(
-                      show: false,
-                    ),
+                    borderData: FlBorderData(show: false),
                     barGroups: List.generate(
-                        7,
-                        (index) => BarChartGroupData(
-                              x: index,
-                              barRods: [
-                                BarChartRodData(
-                                  toY: index + 1, // Y값 (높이)
-                                  color: Colors.amber,
-                                )
-                              ],
-                            )),
+                      7,
+                      (index) => BarChartGroupData(
+                        x: index,
+                        barRods: [
+                          BarChartRodData(
+                            toY: index + 1,
+                            color: Colors.amber,
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -253,42 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              color: Colors.grey,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.account_box,
-              color: Colors.grey,
-            ),
-            label: 'Speak',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.more_horiz,
-              color: Colors.grey,
-            ),
-            label: 'Info',
-          ),
-        ],
-        selectedItemColor: Colors.green,
-        showUnselectedLabels: true,
-        selectedLabelStyle:
-            const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-        unselectedItemColor: Colors.grey,
-        currentIndex: 2,
-        onTap: (index) {
-          // setState(() {
-          //   _selectedIndex = index;
-          // });
-        },
       ),
     );
   }
