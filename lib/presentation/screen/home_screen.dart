@@ -2,6 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/z_logic.dart';
 
+import 'talk_archive_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -155,9 +157,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Logout()));
+                        context, // Use the provided context to push the new route
+                        MaterialPageRoute(builder: (context) => const TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
+                      );
                     },
                     child: const Text(
                       '지난 학습 보기',
