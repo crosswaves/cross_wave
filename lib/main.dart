@@ -1,5 +1,11 @@
-import 'package:cross_wave/home_and_talk/login.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_speak_talk/auth_utils.dart';
+import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
+import 'presentation/screen/home_screen.dart';
+import 'presentation/screen/name_set_screen.dart';
+import 'presentation/screen/profile_set_screen.dart';
+import 'presentation/screen/pay_set_screen.dart';
 
 void main() => runApp(const App());
 
@@ -8,12 +14,52 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Talk',
-      theme: ThemeData(
-        primarySwatch: Colors.amber,
-      ),
-      home: const Login(),
+    GoRouter router = GoRouter(
+      initialLocation: '/login',
+      routes: [
+        GoRoute(
+          path: '/login',
+          builder: (BuildContext context, GoRouterState state) => const Login(),
+        ),
+        GoRoute(
+          path: '/name_set',
+          builder: (BuildContext context, GoRouterState state) =>
+              const NameSetScreen(),
+        ),
+        GoRoute(
+          path: '/profile_set',
+          builder: (BuildContext context, GoRouterState state) =>
+              const ProfileSetScreen(),
+        ),
+        GoRoute(
+          path: '/pay_set',
+          builder: (BuildContext context, GoRouterState state) =>
+              const PaySetScreen(),
+        ),
+        GoRoute(
+          path: '/',
+          builder: (BuildContext context, GoRouterState state) =>
+              const HomeScreen(),
+        ),
+      ],
+      redirect: (BuildContext context, GoRouterState state) async {
+        final isLoggedIn = await AuthUtils.getLoginStatus();
+        final isFirstLoginCompleted = await AuthUtils.getFirstLoginCompleted();
+
+        if (state.matchedLocation == '/login' && isLoggedIn) {
+          return isFirstLoginCompleted ? '/' : '/name_set';
+        } else if (!isLoggedIn) {
+          return '/login';
+        }
+        return null;
+      },
+    );
+
+    return MaterialApp.router(
+      title: 'Flutter Speak',
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }
