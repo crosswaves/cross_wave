@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../feedback_screen.dart';
 
 class FeedbackPopup extends StatefulWidget {
+  const FeedbackPopup({super.key});
+
   @override
   FeedbackPopupState createState() => FeedbackPopupState();
 }
@@ -20,8 +22,10 @@ class FeedbackPopupState extends State<FeedbackPopup> {
         TextButton(
           onPressed: () {
             // Navigate to FeedbackScreen on button press
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const FeedbackScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const FeedbackScreen()));
           },
           child: const Text('Yes'),
         ),

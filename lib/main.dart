@@ -1,7 +1,5 @@
+import 'package:cross_wave/home_and_talk/login.dart';
 import 'package:flutter/material.dart';
-
-import 'home_and_talk/home.dart';
-
 
 void main() => runApp(const App());
 
@@ -13,11 +11,9 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Talk',
       theme: ThemeData(
-
         primarySwatch: Colors.amber,
       ),
-      home: const Home(),
-
+      home: const Login(),
     );
   }
 }

@@ -9,29 +9,30 @@ class LastLessonScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('지난 학습'),
-        backgroundColor: Color(0xFF91A7E8),
+        title: const Text('지난 학습'),
+        backgroundColor: const Color(0xFF91A7E8),
       ),
       body: Center(
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return Card(
-
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => LastLessonDetailWidget()));
-                },
-                child: ListTile(
-                  title: Text('Lesson ${index + 1}'),
-                  subtitle: Text('2021-09-0${index + 1}'),
-                  trailing: Icon(Icons.arrow_forward_ios),
-                ),
+          child: ListView.builder(
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Card(
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LastLessonDetailWidget()));
+              },
+              child: ListTile(
+                title: Text('Lesson ${index + 1}'),
+                subtitle: Text('2021-09-0${index + 1}'),
+                trailing: const Icon(Icons.arrow_forward_ios),
               ),
-            );
-          },
-        )
-      ),
+            ),
+          );
+        },
+      )),
     );
   }
 }
