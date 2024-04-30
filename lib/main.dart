@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_speak_talk/auth_utils.dart';
 import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
 import 'presentation/screen/home_screen.dart';
-import 'presentation/screen/name_set_screen.dart';
+import 'presentation/screen/intro_level_screen.dart';
+import 'presentation/screen/intro_name_screen.dart';
 import 'presentation/screen/info_photo_screen.dart';
 import 'presentation/screen/info_pay_screen.dart';
 
@@ -25,7 +26,7 @@ class App extends StatelessWidget {
         GoRoute(
           path: '/name_set',
           builder: (BuildContext context, GoRouterState state) =>
-              const NameSetScreen(),
+              const IntroNameScreen(),
         ),
         GoRoute(
           path: '/profile_set',
@@ -45,7 +46,12 @@ class App extends StatelessWidget {
         GoRoute(
           path: '/info',
           builder: (BuildContext context, GoRouterState state) =>
-          const InfoScreen(),
+              const InfoScreen(),
+        ),
+        GoRoute(
+          path: '/level_set',
+          builder: (BuildContext context, GoRouterState state) =>
+              const IntroLevelScreen(),
         ),
       ],
       redirect: (BuildContext context, GoRouterState state) async {
