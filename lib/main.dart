@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_speak_talk/auth_utils.dart';
 import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
 import 'presentation/screen/home_screen.dart';
-import 'presentation/screen/name_set_screen.dart';
-import 'presentation/screen/profile_set_screen.dart';
-import 'presentation/screen/pay_set_screen.dart';
+import 'presentation/screen/intro_name_screen.dart';
+// import 'presentation/screen/profile_set_screen.dart';
+import 'presentation/screen/intro_level_screen.dart';
 
 void main() => runApp(const App());
 
@@ -24,17 +24,17 @@ class App extends StatelessWidget {
         GoRoute(
           path: '/name_set',
           builder: (BuildContext context, GoRouterState state) =>
-              const NameSetScreen(),
+              const IntroNameScreen(),
         ),
-        GoRoute(
-          path: '/profile_set',
-          builder: (BuildContext context, GoRouterState state) =>
-              const ProfileSetScreen(),
-        ),
+        // GoRoute(
+        //   path: '/profile_set',
+        //   builder: (BuildContext context, GoRouterState state) =>
+        //       const ProfileSetScreen(),
+        // ),
         GoRoute(
           path: '/pay_set',
           builder: (BuildContext context, GoRouterState state) =>
-              const PaySetScreen(),
+              const IntroLevelScreen(),
         ),
         GoRoute(
           path: '/',

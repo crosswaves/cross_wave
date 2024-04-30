@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speak_talk/presentation/screen/profile_set_screen.dart';
+import 'package:flutter_speak_talk/presentation/screen/intro_level_screen.dart';
 
-class NameSetScreen extends StatefulWidget {
-  const NameSetScreen({super.key});
+class IntroNameScreen extends StatefulWidget {
+  const IntroNameScreen({super.key});
 
   @override
-  State<NameSetScreen> createState() => _NameSetScreenState();
+  State<IntroNameScreen> createState() => _IntroNameScreenState();
 }
 
-class _NameSetScreenState extends State<NameSetScreen> {
+class _IntroNameScreenState extends State<IntroNameScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController(); // 이름을 입력받기 위한 컨트롤러
   bool get _isKeyboardVisible {
@@ -34,32 +34,42 @@ class _NameSetScreenState extends State<NameSetScreen> {
           child: Column(
             children: [
               const SizedBox(height: 50),
-              Container(
-                margin: const EdgeInsets.all(75),
-                decoration: BoxDecoration(
-                  color: Colors.black87,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            '이름 설정하기',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
+              Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        '1/2',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    child: const Text(
+                      'CrossWave가 어떤 이름으로\n불러드릴까요?',
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 100,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -82,14 +92,12 @@ class _NameSetScreenState extends State<NameSetScreen> {
                   },
                 ),
               ),
-              const SizedBox(
-                height: 140,
-              ),
+              const Spacer(),
               Visibility(
                 visible: !_isKeyboardVisible,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(240, 240),
+                    minimumSize: const Size(140, 140),
                     backgroundColor: const Color(0xFFECE6CC),
                   ),
                   onPressed: () {
@@ -97,7 +105,7 @@ class _NameSetScreenState extends State<NameSetScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfileSetScreen(),
+                          builder: (context) => const IntroLevelScreen(),
                         ),
                       );
                     } else {
@@ -123,7 +131,7 @@ class _NameSetScreenState extends State<NameSetScreen> {
                       Text(
                         '다음 설정',
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
                         ),
@@ -133,13 +141,16 @@ class _NameSetScreenState extends State<NameSetScreen> {
                       ),
                       Icon(
                         Icons.arrow_forward,
-                        size: 50,
+                        size: 25,
                         color: Colors.deepPurpleAccent,
                       ),
                     ],
                   ),
                 ),
               ),
+              const SizedBox(
+                height: 50,
+              )
             ],
           ),
         ),
