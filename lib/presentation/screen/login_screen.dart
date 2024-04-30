@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speak_talk/presentation/screen/name_set_screen.dart';
+import 'package:flutter_speak_talk/presentation/screen/intro_name_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_screen.dart';
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const NameSetScreen(),
+                        builder: (context) => const IntroNameScreen(),
                       ),
                     );
                     await prefs.setBool('isFirstLogin', false);
