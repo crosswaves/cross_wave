@@ -1,14 +1,20 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_speak_talk/auth_utils.dart';
 import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
+import 'firebase_options.dart';
 import 'presentation/screen/home_screen.dart';
 import 'presentation/screen/name_set_screen.dart';
 import 'presentation/screen/info_photo_screen.dart';
 import 'presentation/screen/info_pay_screen.dart';
 
-void main() => runApp(const App());
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,);
+  runApp(const App());
+}
 
 class App extends StatelessWidget {
   const App({super.key});
