@@ -2,17 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/home_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/pay_card_screen.dart';
 
-class PaySetScreen extends StatefulWidget {
-  const PaySetScreen({super.key});
+class InfoPayScreen extends StatefulWidget {
+  const InfoPayScreen({super.key});
 
   @override
-  State<PaySetScreen> createState() => _PaySetScreenState();
+  State<InfoPayScreen> createState() => _InfoPayScreenState();
 }
 
-class _PaySetScreenState extends State<PaySetScreen> {
+class _InfoPayScreenState extends State<InfoPayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('요금제 설정'),
+        centerTitle: true,
+        backgroundColor: Color(0xFFC4E6F3),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -26,22 +31,22 @@ class _PaySetScreenState extends State<PaySetScreen> {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
             Container(
-              margin: const EdgeInsets.all(75),
+              margin: const EdgeInsets.all(55),
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Padding(
-                padding: EdgeInsets.all(25),
+                padding: EdgeInsets.all(5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Column(
                       children: [
                         Text(
-                          '요금제 설정하기',
+                          '요금제 선택하기',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w600,
