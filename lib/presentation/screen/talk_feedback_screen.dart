@@ -28,7 +28,7 @@ class TalkFeedbackScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const TalkHistoryScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
+              MaterialPageRoute(builder: (context) => const TalkHistoryScreen()),
             );
           },
         ),
