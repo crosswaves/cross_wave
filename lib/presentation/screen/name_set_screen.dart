@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speak_talk/presentation/screen/profile_set_screen.dart';
+import 'package:flutter_speak_talk/presentation/screen/info_photo_screen.dart';
 
 class NameSetScreen extends StatefulWidget {
   const NameSetScreen({super.key});
@@ -97,7 +97,7 @@ class _NameSetScreenState extends State<NameSetScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfileSetScreen(),
+                          builder: (context) => const InfoPhotoScreen(),
                         ),
                       );
                     } else {

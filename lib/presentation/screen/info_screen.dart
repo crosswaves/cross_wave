@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speak_talk/presentation/screen/info_photo_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart';
 
@@ -20,8 +22,14 @@ class InfoScreen extends StatelessWidget {
 
                 Row(
                   children: [
-                    const CircleAvatar(
-                      radius: 75,
+                    GestureDetector(
+                      onTap: (){
+                        // TODO 사진 업로드 기능 추가
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoPhotoScreen()));
+                      },
+                      child: const CircleAvatar(
+                        radius: 75,
+                      ),
                     ), // TODO 사진 업로드 기능 추가
                     const SizedBox(
                       width: 20,

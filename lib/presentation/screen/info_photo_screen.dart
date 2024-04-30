@@ -1,16 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_speak_talk/presentation/screen/pay_set_screen.dart';
+import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfileSetScreen extends StatefulWidget {
-  const ProfileSetScreen({super.key});
+class InfoPhotoScreen extends StatefulWidget {
+  const InfoPhotoScreen({super.key});
 
   @override
-  State<ProfileSetScreen> createState() => _ProfileSetScreenState();
+  State<InfoPhotoScreen> createState() => _InfoPhotoScreenState();
 }
 
-class _ProfileSetScreenState extends State<ProfileSetScreen> {
+class _InfoPhotoScreenState extends State<InfoPhotoScreen> {
   final _formKey = GlobalKey<FormState>();
   File? _image; // Variable to store the chosen image
   final picker = ImagePicker();
@@ -34,6 +34,10 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('프로필 사진 설정'),
+        backgroundColor: Color(0xFFC4E6F3),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -49,22 +53,22 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
           key: _formKey, // Form의 상태를 관리하기 위한 key
           child: Column(
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               Container(
-                margin: const EdgeInsets.all(75),
+                margin: const EdgeInsets.all(55),
                 decoration: BoxDecoration(
                   color: Colors.black87,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Padding(
-                  padding: EdgeInsets.all(25),
+                  padding: EdgeInsets.all(5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Column(
                         children: [
                           Text(
-                            '프로필 사진 설정',
+                            '사진 선택하기',
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w600,
@@ -120,7 +124,7 @@ class _ProfileSetScreenState extends State<ProfileSetScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const PaySetScreen(),
+                          builder: (context) => const InfoPayScreen(),
                         ),
                       );
                     } else {

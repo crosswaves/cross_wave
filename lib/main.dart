@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speak_talk/presentation/screen/info_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_speak_talk/auth_utils.dart';
 import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
 import 'presentation/screen/home_screen.dart';
 import 'presentation/screen/name_set_screen.dart';
-import 'presentation/screen/profile_set_screen.dart';
-import 'presentation/screen/pay_set_screen.dart';
+import 'presentation/screen/info_photo_screen.dart';
+import 'presentation/screen/info_pay_screen.dart';
 
 void main() => runApp(const App());
 
@@ -29,17 +30,22 @@ class App extends StatelessWidget {
         GoRoute(
           path: '/profile_set',
           builder: (BuildContext context, GoRouterState state) =>
-              const ProfileSetScreen(),
+              const InfoPhotoScreen(),
         ),
         GoRoute(
           path: '/pay_set',
           builder: (BuildContext context, GoRouterState state) =>
-              const PaySetScreen(),
+              const InfoPayScreen(),
         ),
         GoRoute(
           path: '/',
           builder: (BuildContext context, GoRouterState state) =>
               const HomeScreen(),
+        ),
+        GoRoute(
+          path: '/info',
+          builder: (BuildContext context, GoRouterState state) =>
+          const InfoScreen(),
         ),
       ],
       redirect: (BuildContext context, GoRouterState state) async {
@@ -51,6 +57,7 @@ class App extends StatelessWidget {
         } else if (!isLoggedIn) {
           return '/login';
         }
+
         return null;
       },
     );
