@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'info_screen.dart';
+import 'talk_archive_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -206,7 +207,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // 화면 전환 로직이 필요할 경우 여기에 추가
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
+                      );
                     },
                     child: const Text(
                       '지난 학습 보기',
