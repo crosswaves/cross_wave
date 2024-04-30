@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speak_talk/presentation/screen/talk_history_screen.dart';
 
 class TalkFeedbackScreen extends StatelessWidget {
   const TalkFeedbackScreen({super.key});
@@ -25,7 +26,10 @@ class TalkFeedbackScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // This will pop the TalkFeedbackScreen
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const TalkHistoryScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
+            );
           },
         ),
       ),
