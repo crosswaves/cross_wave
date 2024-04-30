@@ -11,8 +11,10 @@ import 'presentation/screen/info_photo_screen.dart';
 import 'presentation/screen/info_pay_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const App());
 }
 
@@ -51,7 +53,7 @@ class App extends StatelessWidget {
         GoRoute(
           path: '/info',
           builder: (BuildContext context, GoRouterState state) =>
-          const InfoScreen(),
+          InfoScreen(),
         ),
       ],
       redirect: (BuildContext context, GoRouterState state) async {

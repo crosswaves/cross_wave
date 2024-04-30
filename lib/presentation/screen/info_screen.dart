@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_photo_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../utils/firebase_service.dart';
 import 'login_screen.dart';
 
 class InfoScreen extends StatelessWidget {
-  const InfoScreen({super.key});
+  final _authService = FirebaseAuthService();
+
+  InfoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +125,8 @@ class InfoScreen extends StatelessWidget {
   void _logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance(); // 1. SharedPreferences 인스턴스 가져오기
     await prefs.setBool('isFirstLogin', true); // 2. 'isFirstLogin' 값을 true로 설정하여 첫 번째 로그인 상태로 변경
+    await _authService.signOut(); // 3. Firebase 로그아웃
+
     // 3. 로그아웃 메시지 표시
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

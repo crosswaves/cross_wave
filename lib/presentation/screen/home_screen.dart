@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _widgetOptions = [
       buildHomeTab(),
       const SelectThemeScreen(),
-      const InfoScreen(),
+      InfoScreen(),
     ];
     BackButtonInterceptor.add(myInterceptor);
   }

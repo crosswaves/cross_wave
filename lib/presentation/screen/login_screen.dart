@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/name_set_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/firebase_service.dart';
 import 'home_screen.dart';
 
 class Login extends StatefulWidget {
@@ -12,8 +14,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   @override
   Widget build(BuildContext context) {
+    final _authService = FirebaseAuthService();
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -46,24 +51,36 @@ class _LoginState extends State<Login> {
                   final prefs = await SharedPreferences.getInstance();
                   final isFirstLogin = prefs.getBool('isFirstLogin') ?? true;
 
-                  if (isFirstLogin) {
+                  // 구글 로그인 메서드
+                  // if (isFirstLogin) {
+                    User? user = await _authService.signInWithGoogle();
+                    if(user != null) {
+                      print('로그인 성공: ${user.displayName}님 환영합니다!;');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const NameSetScreen(),
+                        ),
+                      );
+                    }
+
                     // 첫 로그인 시 NameSetScreen으로 이동
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const NameSetScreen(),
-                      ),
-                    );
-                    await prefs.setBool('isFirstLogin', false);
-                  } else {
-                    // 두 번째 로그인 시 바로 HomeScreen으로 이동
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ),
-                    );
-                  }
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const NameSetScreen(),
+                    //   ),
+                    // );
+                    // await prefs.setBool('isFirstLogin', false);
+                  // } else {
+                  //   // 두 번째 로그인 시 바로 HomeScreen으로 이동
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => const HomeScreen(),
+                  //     ),
+                  //   );
+                  // }
                 },
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
