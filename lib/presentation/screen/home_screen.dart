@@ -2,8 +2,8 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'info_screen.dart';
-import 'z_speak_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _widgetOptions = [
       buildHomeTab(),
-      const SpeakScreen(),
+      const SelectThemeScreen(),
       const InfoScreen(),
     ];
     BackButtonInterceptor.add(myInterceptor);
