@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/components/select_theme_card.dart';
+import 'package:flutter_speak_talk/presentation/screen/talk_screen.dart';
+import 'package:go_router/go_router.dart';
 
 class SelectThemeScreen extends StatelessWidget {
   const SelectThemeScreen({super.key});
@@ -15,33 +17,35 @@ class SelectThemeScreen extends StatelessWidget {
       ),
       body: Container(
         color: Color(0xFF0DA8EA),
-        child: Column(
-          children: [
-            _themeTopText(),
-            SizedBox(height: 10),
-            _gridItems(),
-            _bottomButton(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _themeTopText(),
+              SizedBox(height: 10),
+              _gridItems(),
+              _bottomButton(context),
+            ],
+          ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.speaker_phone),
-            label: 'Speak',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Info',
-          ),
-        ],
-        selectedItemColor: Colors.white,
-        backgroundColor: Color(0xFFC4E6F3),
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.speaker_phone),
+      //       label: 'Speak',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.account_box),
+      //       label: 'Info',
+      //     ),
+      //   ],
+      //   selectedItemColor: Colors.white,
+      //   backgroundColor: Color(0xFFC4E6F3),
+      // ),
     );
   }
 
@@ -95,6 +99,7 @@ class SelectThemeScreen extends StatelessWidget {
   Widget _gridItems() {
     return GridView(
       padding: const EdgeInsets.all(20),
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -115,7 +120,7 @@ class SelectThemeScreen extends StatelessWidget {
     );
   }
 
-  Widget _bottomButton() {
+  Widget _bottomButton(context) {
     return Container(
       padding: const EdgeInsets.all(10),
       child: ElevatedButton(
@@ -127,7 +132,10 @@ class SelectThemeScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const TalkScreen()));
+        },
         child: const Text(
           '다음',
           style: TextStyle(
