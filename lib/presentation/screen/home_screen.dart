@@ -1,5 +1,7 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/services.dart';
 import 'info_screen.dart';
 import 'z_speak_screen.dart';
 
@@ -15,6 +17,41 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<Widget> _widgetOptions;
 
   @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    _showExitConfirmationDialog();
+    return true;
+  }
+
+  void _showExitConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('앱 종료'),
+        content: const Text('앱을 종료하시겠습니까?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('x'),
+          ),
+          TextButton(
+            onPressed: () {
+              SystemNavigator.pop();
+            },
+            child: const Text('o'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
   void initState() {
     super.initState();
     _widgetOptions = [
@@ -22,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const SpeakScreen(),
       const InfoScreen(),
     ];
+    BackButtonInterceptor.add(myInterceptor);
   }
 
   void _onItemTapped(int index) {
