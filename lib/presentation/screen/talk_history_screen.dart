@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../data/domain/model/conversation.dart';
 import '../components/conversation_card.dart';
 import '../components/feedback_popup.dart';
+import 'talk_archive_screen.dart';
 
 class TalkHistoryScreen extends StatelessWidget {
   const TalkHistoryScreen({super.key});
@@ -70,6 +71,15 @@ class TalkHistoryScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const TalkArchiveScreen()),
+            );
+          },
         ),
         actions: [
           IconButton(

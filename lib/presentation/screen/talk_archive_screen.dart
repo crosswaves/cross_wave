@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speak_talk/presentation/screen/home_screen.dart';
 import '../components/conversation_list.dart';
 
 class TalkArchiveScreen extends StatelessWidget {
@@ -11,7 +12,12 @@ class TalkArchiveScreen extends StatelessWidget {
         title: const Text('이전 대화 목록'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          },
         ),
       ),
       body: Padding(
