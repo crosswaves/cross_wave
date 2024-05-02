@@ -1,12 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_photo_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/firebase_service.dart';
 import 'login_screen.dart';
+import 'package:intl/intl.dart';
 
 class InfoScreen extends StatelessWidget {
-  final _authService = FirebaseAuthService();
+  final FirebaseAuthService _authService = FirebaseAuthService();
 
   InfoScreen({super.key});
 
@@ -22,29 +24,55 @@ class InfoScreen extends StatelessWidget {
                 const SizedBox(
                   height: 80,
                 ),
-
                 Row(
                   children: [
                     GestureDetector(
-                      onTap: (){
-                        // TODO 사진 업로드 기능 추가
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoPhotoScreen()));
+                      onTap: () {
+                        // TODO: 사진 업로드 기능 추가
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoPhotoScreen()));
                       },
-                      child: const CircleAvatar(
-                        radius: 75,
+                      child: FutureBuilder<DocumentSnapshot?>(
+                        future: _getUserData(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            // 데이터를 아직 가져오지 못한 경우 로딩 표시
+                            return const CircleAvatar(
+                              radius: 75,
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.hasError) {
+                            // 데이터를 가져오는 도중 에러 발생한 경우
+                            return const CircleAvatar(
+                              radius: 75,
+                              child: Icon(Icons.error),
+                            );
+                          } else if (snapshot.hasData) {
+                            // 데이터를 가져와서 사용자 정보 표시
+                            var userData = snapshot.data!;
+                            var photoUrl = userData['photoUrl'] ?? '';
+                            return CircleAvatar(
+                              radius: 75,
+                              backgroundImage: NetworkImage(photoUrl),
+                            );
+                          } else {
+                            // 데이터가 없는 경우 빈 프로필 사진 표시
+                            return const CircleAvatar(
+                              radius: 75,
+                              backgroundColor: Colors.grey,
+                            );
+                          }
+                        },
                       ),
-                    ), // TODO 사진 업로드 기능 추가
+                    ),
                     const SizedBox(
                       width: 20,
                     ),
                     _buildUserInfoSection(context), // 유저 이름 섹션 불러오기
                   ],
                 ),
-
                 const SizedBox(
                   height: 20,
                 ),
-
                 ListView.separated(
                   shrinkWrap: true, // ListView의 높이를 감싸는 콘텐츠에 맞춥니다.
                   itemCount: 3, // 항목 개수
@@ -91,11 +119,23 @@ class InfoScreen extends StatelessWidget {
   }
 
   Widget _buildUserInfoSection(BuildContext context) {
-    return FutureBuilder<String>(
-      future: _getUserName(), // 이름 가져오는 FutureBuilder
+    return FutureBuilder<DocumentSnapshot?>(
+      future: _getUserData(), // 사용자 정보 가져오는 FutureBuilder
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final name = snapshot.data!;
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator(); // 데이터 로딩 중이면 로딩 표시
+        } else if (snapshot.hasError) {
+          return const Text('Error'); // 에러가 발생하면 에러 메시지 표시
+        } else {
+          final userData = snapshot.data;
+          final name = userData?['displayName'] ?? 'Unknown'; // displayName이 없으면 'Unknown'으로 처리
+          final creationTime = userData?['creationTime'] ?? 'Unknown'; // creationTime이 없으면 'Unknown'으로 처리
+
+          // Timestamp 객체를 DateTime으로 변환
+          final timestamp = (creationTime as Timestamp).toDate();
+          // DateTime을 원하는 형식의 문자열로 변환
+          final formattedCreationTime = DateFormat('yyyy-MM-dd').format(timestamp);
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -103,14 +143,12 @@ class InfoScreen extends StatelessWidget {
                 '이름 : $name',
                 style: const TextStyle(fontSize: 22),
               ),
-              const Text(
-                '가입일 : 2024-04-29',
-                style: TextStyle(fontSize: 18),
+              Text(
+                '가입일 : $formattedCreationTime',
+                style: const TextStyle(fontSize: 18),
               ),
             ],
           );
-        } else {
-          return const CircularProgressIndicator(); // 이름 로딩 중 표시
         }
       },
     );
@@ -120,6 +158,14 @@ class InfoScreen extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
     final name = prefs.getString('name') ?? 'Unknown';
     return name;
+  }
+
+  Future<DocumentSnapshot?> _getUserData() async {
+    User? user = _authService.getCurrentUser();
+    if (user != null) {
+      return await _authService.getUserData(user);
+    }
+    return null;
   }
 
   void _logout(BuildContext context) async {
