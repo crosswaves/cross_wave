@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cross_wave/presentation/components/conversation_list.dart';
+
+import 'components/conversation_list.dart';
 
 class ArchiveScreen extends StatelessWidget {
   const ArchiveScreen({super.key});
