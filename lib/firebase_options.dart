@@ -3,7 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_speak_talk/env/env.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: dotenv.env['API_KEY_ANDROID'],
+    apiKey: Env.firebaseAndroidApiKey,
     appId: '1:872764944649:android:f51f737c3ee5a34b2963d8',
     messagingSenderId: '872764944649',
     projectId: 'cross-wave',
@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: dotenv.env['API_KEY_IOS'],
+    apiKey: Env.firebaseIosApiKey,
     appId: '1:872764944649:ios:17ff64b8be648e542963d8',
     messagingSenderId: '872764944649',
     projectId: 'cross-wave',
