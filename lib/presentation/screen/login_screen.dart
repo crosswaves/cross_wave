@@ -53,34 +53,34 @@ class _LoginState extends State<Login> {
 
                   // 구글 로그인 메서드
                   // if (isFirstLogin) {
-                    User? user = await _authService.signInWithGoogle();
-                    if(user != null) {
-                      print('로그인 성공: ${user.displayName}님 환영합니다!;');
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NameSetScreen(),
-                        ),
-                      );
-                    }
-
-                    // 첫 로그인 시 NameSetScreen으로 이동
+                  User? user = await _authService.signInWithGoogle();
+                  if (user != null) {
+                    print('로그인 성공: ${user.displayName}님 환영합니다!;');
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const IntroNameScreen(),
                       ),
                     );
-                    await prefs.setBool('isFirstLogin', false);
-                  } else {
-                    // 두 번째 로그인 시 바로 HomeScreen으로 이동
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
-                      ),
-                    );
                   }
+
+                  // 첫 로그인 시 NameSetScreen으로 이동
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => const IntroNameScreen(),
+                  //     ),
+                  //   );
+                  //   await prefs.setBool('isFirstLogin', false);
+                  // } else {
+                  //   // 두 번째 로그인 시 바로 HomeScreen으로 이동
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => const HomeScreen(),
+                  //     ),
+                  //   );
+                  // }
                 },
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,

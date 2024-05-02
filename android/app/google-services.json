@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "872764944649",
+    "project_id": "cross-wave",
+    "storage_bucket": "cross-wave.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872764944649:android:f51f737c3ee5a34b2963d8",
+        "android_client_info": {
+          "package_name": "com.crosswave.cross_wave"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWxNBl8ojolu0WPMP0Xrff6Idfoa4Ypyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
