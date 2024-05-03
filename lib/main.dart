@@ -56,15 +56,13 @@ class App extends StatelessWidget {
         ),
         GoRoute(
           path: '/info',
-          builder: (BuildContext context, GoRouterState state) =>
-              InfoScreen(),
+          builder: (BuildContext context, GoRouterState state) => InfoScreen(),
         ),
         GoRoute(
           path: '/level_set',
           builder: (BuildContext context, GoRouterState state) =>
               const IntroLevelScreen(),
         ),
-
       ],
       redirect: (BuildContext context, GoRouterState state) async {
         final isLoggedIn = await AuthUtils.getLoginStatus();
@@ -76,7 +74,6 @@ class App extends StatelessWidget {
           return '/login';
           // return '/';
         }
-
 
         return null;
       },

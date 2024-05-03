@@ -120,23 +120,23 @@ class FirebaseStoreService {
         .delete();
   }
 
-  void createAndAddProfile() {
+  void createNewProfile() {
     Profile newProfile = Profile(
-      name: "불닭볶음면",
-      profilePicture: "https://images.emarteveryday.co.kr/images/app/webapps/evd_web2/share/SKU/mall/63/03/8801073210363_1.png",
-      membershipLevel: "Gold",
+      name: '아이유이유',
+      profilePicture: 'https://images.emarteveryday.co.kr/images/app/webapps/evd_web2/share/SKU/mall/63/03/8801073210363_1.png',
+      membershipLevel: '일반회원',
       joinDate: DateTime.now(),
-      level: "Advanced",
+      level: 'beginner',
       weeklyProgress: 70,
       dailyProgress: 10,
-      remainingChats: 5,
+      remainingChats: 3,
     );
 
-    String userId = "uniqueUserId";  // 이 사용자의 고유 ID
+    String userId = 'uniqueUserId';  // 이 사용자의 고유 ID
     addProfile(newProfile, userId).then((_) {
-      print("Profile added successfully!");
+      print('Profile added successfully!');
     }).catchError((error) {
-      print("Failed to add profile: $error");
+      print('Failed to add profile: $error');
     });
   }
 }

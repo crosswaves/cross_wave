@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           ElevatedButton(
               onPressed: () {
-                _firebaseStoreService.createAndAddProfile();
+                _firebaseStoreService.createNewProfile();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: const Row(
