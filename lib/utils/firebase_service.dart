@@ -6,6 +6,7 @@ class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  // 이메일 패스워드 로그인
   // Future<User?> signInWithEmailAndPassword(
   //     String email, String password) async {
   //   try {
@@ -35,6 +36,7 @@ class FirebaseAuthService {
   //   }
   // }
 
+  // 구글 이메일 로그인
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();

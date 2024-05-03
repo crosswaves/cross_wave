@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseStoreService _firebaseStoreService =
-      FirebaseStoreService('userId');
+      FirebaseStoreService();
 
   List<Profile> profiles = [];
 
