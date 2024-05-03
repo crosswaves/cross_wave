@@ -28,6 +28,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     GoRouter router = GoRouter(
       initialLocation: '/login',
+      // initialLocation: '/',
       routes: [
         GoRoute(
           path: '/login',
@@ -55,8 +56,7 @@ class App extends StatelessWidget {
         ),
         GoRoute(
           path: '/info',
-          builder: (BuildContext context, GoRouterState state) =>
-              InfoScreen(),
+          builder: (BuildContext context, GoRouterState state) => InfoScreen(),
         ),
         GoRoute(
           path: '/level_set',
@@ -72,6 +72,7 @@ class App extends StatelessWidget {
           return isFirstLoginCompleted ? '/' : '/name_set';
         } else if (!isLoggedIn) {
           return '/login';
+          // return '/';
         }
 
         return null;
