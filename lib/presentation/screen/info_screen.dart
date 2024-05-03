@@ -154,12 +154,6 @@ class InfoScreen extends StatelessWidget {
     );
   }
 
-  Future<String> _getUserName() async {
-    final prefs = await SharedPreferences.getInstance();
-    final name = prefs.getString('name') ?? 'Unknown';
-    return name;
-  }
-
   Future<DocumentSnapshot?> _getUserData() async {
     User? user = _authService.getCurrentUser();
     if (user != null) {
