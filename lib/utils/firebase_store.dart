@@ -83,25 +83,4 @@ class FirebaseStoreService {
       throw Exception('No authenticated user found');
     }
   }
-
-  void createNewProfile() {
-    Profile newProfile = Profile(
-      name: '아이유이유',
-      profilePicture:
-          'https://images.emarteveryday.co.kr/images/app/webapps/evd_web2/share/SKU/mall/63/03/8801073210363_1.png',
-      membershipLevel: '일반회원',
-      joinDate: DateTime.now(),
-      level: 'beginner',
-      weeklyProgress: 70,
-      dailyProgress: 10,
-      remainingChats: 3,
-    );
-
-    String userId = 'uniqueUserId'; // 이 사용자의 고유 ID
-    addProfile(newProfile).then((_) {
-      print('Profile added successfully!');
-    }).catchError((error) {
-      print('Failed to add profile: $error');
-    });
-  }
 }

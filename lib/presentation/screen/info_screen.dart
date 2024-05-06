@@ -172,9 +172,11 @@ class InfoScreen extends StatelessWidget {
           final userData = snapshot.data;
           final name = userData?.name ?? 'Unknown'; // displayName이 없으면 'Unknown'으로 처리
           final DateTime creationTime = userData?.joinDate ?? DateTime.parse('2999-12-31'); // creationTime이 없으면 'Unknown'으로 처리
+          final DateTime lastLoginTime = userData?.lastSignInTime ?? DateTime.parse('2999-12-31'); // creationTime이 없으면 'Unknown'으로 처리
 
           // DateTime을 원하는 형식의 문자열로 변환
           final formattedCreationTime = DateFormat('yyyy-MM-dd').format(creationTime);
+          final formattedLastLogin = DateFormat('yyyy-MM-dd HH:mm:ss').format(lastLoginTime);
 
           // final timestamp = (creationTime as Timestamp).toDate();
           // final Timestamp timestamp = creationTime as Timestamp;  // Timestamp로 캐스팅
@@ -191,6 +193,10 @@ class InfoScreen extends StatelessWidget {
               ),
               Text(
                 '가입일 : $formattedCreationTime',
+                style: const TextStyle(fontSize: 18, color: Colors.white),
+              ),
+              Text(
+                '최근로그인 :\n $formattedLastLogin',
                 style: const TextStyle(fontSize: 18, color: Colors.white),
               ),
             ],

@@ -118,12 +118,12 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
                               email: user.email,
                               joinDate: user.metadata.creationTime ?? DateTime.now(),
                               lastSignInTime: user.metadata.lastSignInTime ?? DateTime.now(),
+                              profilePicture: user.photoURL ?? 'https://via.placeholder.com/150',
                               membershipLevel: '일반',
                               level: 'Iron',
                               weeklyProgress: 0,
                               dailyProgress: 0,
                               remainingChats: 5,
-                              profilePicture: user.photoURL ?? 'https://via.placeholder.com/150',
                             ),
                           );
                         } else {
@@ -137,7 +137,7 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const IntroLevelScreen(),
+                          builder: (context) => IntroLevelScreen(),
                         ),
                       );
                     } else {
