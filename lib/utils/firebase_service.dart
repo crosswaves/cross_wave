@@ -63,18 +63,6 @@ class FirebaseAuthService {
 
       if (userCredential != null) {
         // 사용자 정보가 null이 아닌 경우에만 Firestore에 사용자 정보 저장
-        // await addUserData(userCredential.user!);
-        // return userCredential.user; // 로그인된 사용자 정보 반환
-        //     } else {
-        //       return null; // 사용자 정보가 null인 경우 null 반환
-        //     }
-        //   } on Exception catch (e)
-        //   {
-        //     print('exception->$e');
-        //     return null;
-        //   }
-        // }
-
         await _firebaseStoreService.addProfile(Profile(
           id: userCredential.user!.uid,
           name: userCredential.user!.displayName,
@@ -96,6 +84,18 @@ class FirebaseAuthService {
       print('Exception during Google Sign-In: $e');
       return null;
     }
+    // 사용자 정보가 null이 아닌 경우에만 Firestore에 사용자 정보 저장
+    // await addUserData(userCredential.user!);
+    // return userCredential.user; // 로그인된 사용자 정보 반환
+    //     } else {
+    //       return null; // 사용자 정보가 null인 경우 null 반환
+    //     }
+    //   } on Exception catch (e)
+    //   {
+    //     print('exception->$e');
+    //     return null;
+    //   }
+    // }
   }
 
   Future<void> signOut() async {
