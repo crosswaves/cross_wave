@@ -27,8 +27,8 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GoRouter router = GoRouter(
+      // initialLocation: '/login',
       initialLocation: '/login',
-      // initialLocation: '/',
       routes: [
         GoRoute(
           path: '/login',
@@ -71,8 +71,8 @@ class App extends StatelessWidget {
         if (state.matchedLocation == '/login' && isLoggedIn) {
           return isFirstLoginCompleted ? '/' : '/name_set';
         } else if (!isLoggedIn) {
+          // return '/login';
           return '/login';
-          // return '/';
         }
 
         return null;

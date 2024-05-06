@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
 import '../../data/domain/model/profile.dart';
@@ -19,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseStoreService _firebaseStoreService =
-      FirebaseStoreService('userId');
+      FirebaseStoreService();
 
   List<Profile> profiles = [];
 
@@ -116,7 +117,11 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           ElevatedButton(
               onPressed: () {
-                _firebaseStoreService.createNewProfile();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const InfoPayScreen()),
+                );
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: const Row(
@@ -159,8 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              'https://entertainimg.kbsmedia.co.kr/cms/uploads/PERSON_20230425100142_a6929970038832dc461ad8ee40ef52e4.png'),
+                          backgroundImage: NetworkImage(snapshot.data!.profilePicture ?? ''),
                           radius: 50,
                           backgroundColor: Colors.red,
                         ),
@@ -174,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Text(
                               // 멤버쉽(회원) 레벨
-                              '${snapshot.data!.membershipLevel} 입니다',
+                              '${snapshot.data!.membershipLevel} 회원 입니다',
                               style:
                                   TextStyle(fontSize: 18, color: Colors.white),
                             ),
@@ -202,11 +206,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const SizedBox(
+                    SizedBox(
                       width: 350,
                       height: 10,
                       child: LinearProgressIndicator(
-                        value: 0.6,
+                        value: snapshot.data!.remainingChats / 5,
                         backgroundColor: Colors.black,
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
                       ),

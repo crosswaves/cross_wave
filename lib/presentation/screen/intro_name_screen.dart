@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speak_talk/data/domain/model/profile.dart';
 import 'package:flutter_speak_talk/presentation/screen/intro_level_screen.dart';
+
+import '../../utils/firebase_store.dart';
 
 class IntroNameScreen extends StatefulWidget {
   const IntroNameScreen({super.key});
@@ -11,6 +15,9 @@ class IntroNameScreen extends StatefulWidget {
 class _IntroNameScreenState extends State<IntroNameScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController(); // 이름을 입력받기 위한 컨트롤러
+  final FirebaseStoreService _firebaseStore = FirebaseStoreService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool get _isKeyboardVisible {
     return MediaQuery.of(context).viewInsets.bottom > 0;
   }
@@ -100,12 +107,37 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
                     minimumSize: const Size(140, 140),
                     backgroundColor: const Color(0xFFECE6CC),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
+                      try {
+                        User? user = _auth.currentUser;
+                        if (user != null) {
+                          await _firebaseStore.updateProfile(
+                            Profile(
+                              name: _nameController.text,
+                              email: user.email,
+                              joinDate: user.metadata.creationTime ?? DateTime.now(),
+                              lastSignInTime: user.metadata.lastSignInTime ?? DateTime.now(),
+                              profilePicture: user.photoURL ?? 'https://via.placeholder.com/150',
+                              membershipLevel: '일반',
+                              level: 'Iron',
+                              weeklyProgress: 0,
+                              dailyProgress: 0,
+                              remainingChats: 5,
+                            ),
+                          );
+                        } else {
+                          throw Exception('No authenticated user found');
+                        }
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('프로필 업데이트에 실패했습니다')));
+                        print('Failed to update profile: $e');
+                      }
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const IntroLevelScreen(),
+                          builder: (context) => IntroLevelScreen(),
                         ),
                       );
                     } else {

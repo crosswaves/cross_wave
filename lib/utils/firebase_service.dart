@@ -1,11 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_speak_talk/utils/firebase_store.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../data/domain/model/profile.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseStoreService _firebaseStoreService = FirebaseStoreService();
 
+  // 이메일 패스워드 로그인
   // Future<User?> signInWithEmailAndPassword(
   //     String email, String password) async {
   //   try {
@@ -35,6 +40,7 @@ class FirebaseAuthService {
   //   }
   // }
 
+  // 구글 이메일 로그인
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -57,15 +63,39 @@ class FirebaseAuthService {
 
       if (userCredential != null) {
         // 사용자 정보가 null이 아닌 경우에만 Firestore에 사용자 정보 저장
-        await addUserData(userCredential.user!);
+        await _firebaseStoreService.addProfile(Profile(
+          id: userCredential.user!.uid,
+          name: userCredential.user!.displayName,
+          email: userCredential.user!.email,
+          lastSignInTime: userCredential.user!.metadata.lastSignInTime,
+          joinDate: userCredential.user!.metadata.creationTime,
+          profilePicture: userCredential.user!.photoURL,
+          membershipLevel: 'Standard',
+          level: 'Iron',
+          weeklyProgress: 0,
+          dailyProgress: 0,
+          remainingChats: 5,
+        ));
         return userCredential.user; // 로그인된 사용자 정보 반환
       } else {
         return null; // 사용자 정보가 null인 경우 null 반환
       }
     } on Exception catch (e) {
-      print('exception->$e');
+      print('Exception during Google Sign-In: $e');
       return null;
     }
+    // 사용자 정보가 null이 아닌 경우에만 Firestore에 사용자 정보 저장
+    // await addUserData(userCredential.user!);
+    // return userCredential.user; // 로그인된 사용자 정보 반환
+    //     } else {
+    //       return null; // 사용자 정보가 null인 경우 null 반환
+    //     }
+    //   } on Exception catch (e)
+    //   {
+    //     print('exception->$e');
+    //     return null;
+    //   }
+    // }
   }
 
   Future<void> signOut() async {
@@ -79,24 +109,24 @@ class FirebaseAuthService {
   }
 
   // Firestore에 사용자 정보 추가하는 함수
-  Future<void> addUserData(User user) async {
-    try {
-      final UserMetadata metadata =
-          user.metadata; // Firebase Authentication의 사용자 메타데이터 가져오기
-      // Firestore에 사용자 정보 users 컬렉션 내 userId 별 고유정보 저장
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        'userId': user.uid,
-        'email': user.email,
-        'displayName': user.displayName,
-        'photoUrl': user.photoURL,
-        'creationTime': metadata.creationTime, // 가입일
-        'lastSignInTime': metadata.lastSignInTime, // 마지막 접속일
-      });
-      print('사용자 정보 추가 성공');
-    } catch (e) {
-      print("사용자 정보 추가 실패: $e");
-    }
-  }
+  // Future<void> addUserData(User user) async {
+  //   try {
+  //     final UserMetadata metadata =
+  //         user.metadata; // Firebase Authentication의 사용자 메타데이터 가져오기
+  //     // Firestore에 사용자 정보 users 컬렉션 내 userId 별 고유정보 저장
+  //     await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+  //       'userId': user.uid,
+  //       'email': user.email,
+  //       'displayName': user.displayName,
+  //       'photoUrl': user.photoURL,
+  //       'creationTime': metadata.creationTime, // 가입일
+  //       'lastSignInTime': metadata.lastSignInTime, // 마지막 접속일
+  //     });
+  //     print('사용자 정보 추가 성공');
+  //   } catch (e) {
+  //     print("사용자 정보 추가 실패: $e");
+  //   }
+  // }
 
   User? getCurrentUser() {
     return _auth.currentUser;
