@@ -23,7 +23,15 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
   }
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    String name = _nameController.text;
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -137,7 +145,7 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => IntroLevelScreen(),
+                          builder: (context) => IntroLevelScreen(name: name),
                         ),
                       );
                     } else {
