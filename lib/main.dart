@@ -6,6 +6,8 @@ import 'package:flutter_speak_talk/presentation/screen/info_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_speak_talk/auth_utils.dart';
 import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
+import 'api_file/constants/themes.dart';
+import 'api_file/providers/active_theme_provider.dart';
 import 'firebase_options.dart';
 import 'presentation/screen/home_screen.dart';
 import 'presentation/screen/intro_level_screen.dart';
@@ -22,11 +24,11 @@ void main() async {
   runApp(const ProviderScope(child: App()));
 }
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     GoRouter router = GoRouter(
       // initialLocation: '/login',
       initialLocation: '/login',
@@ -81,11 +83,16 @@ class App extends StatelessWidget {
       },
     );
 
+    final activeTheme = ref.watch(activeThemeProvider);
     return MaterialApp.router(
       title: 'Flutter Speak',
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      debugShowCheckedModeBanner: false,
+      themeMode: activeTheme == Themes.dark ? ThemeMode.dark : ThemeMode.light,
     );
   }
 }
