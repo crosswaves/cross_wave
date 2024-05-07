@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green,
+        selectedItemColor: Colors.indigo,
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
@@ -112,7 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildHomeTab() {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFC2CFF2),
+        automaticallyImplyLeading: false, // 뒤로가기 버튼 제거
+        backgroundColor: const Color(0xFFC4E6F3),
         title: const Text('Home'),
         actions: [
           ElevatedButton(
