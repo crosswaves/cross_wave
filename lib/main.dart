@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_speak_talk/auth_utils.dart';
@@ -18,7 +19,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await dotenv.load(fileName: '.env');
-  runApp(const App());
+  runApp(const ProviderScope(child: App()));
 }
 
 class App extends StatelessWidget {
@@ -59,12 +60,11 @@ class App extends StatelessWidget {
           builder: (BuildContext context, GoRouterState state) => InfoScreen(),
         ),
         GoRoute(
-          path: '/level_set/:name',
-          builder: (BuildContext context, GoRouterState state) {
-            final name = state.pathParameters['name'] ?? 'Default name';
-            return IntroLevelScreen(name: name);
-          }
-        ),
+            path: '/level_set/:name',
+            builder: (BuildContext context, GoRouterState state) {
+              final name = state.pathParameters['name'] ?? 'Default name';
+              return IntroLevelScreen(name: name);
+            }),
       ],
       redirect: (BuildContext context, GoRouterState state) async {
         final isLoggedIn = await AuthUtils.getLoginStatus();
