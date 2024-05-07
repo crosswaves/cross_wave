@@ -11,12 +11,22 @@ class SelectThemeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('주제 선택하기'),
         centerTitle: true,
         backgroundColor: Color(0xFFC4E6F3),
       ),
       body: Container(
-        color: Color(0xFF0DA8EA),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+            colors: [
+              Colors.black,
+              Colors.lightBlue,
+            ],
+          ),
+        ),
         child: SingleChildScrollView(
           child: Column(
             children: [
