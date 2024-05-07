@@ -59,9 +59,11 @@ class App extends StatelessWidget {
           builder: (BuildContext context, GoRouterState state) => InfoScreen(),
         ),
         GoRoute(
-          path: '/level_set',
-          builder: (BuildContext context, GoRouterState state) =>
-              const IntroLevelScreen(),
+          path: '/level_set/:name',
+          builder: (BuildContext context, GoRouterState state) {
+            final name = state.pathParameters['name'] ?? 'Default name';
+            return IntroLevelScreen(name: name);
+          }
         ),
       ],
       redirect: (BuildContext context, GoRouterState state) async {

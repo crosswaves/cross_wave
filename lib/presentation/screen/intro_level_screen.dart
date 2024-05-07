@@ -7,7 +7,9 @@ import '../../data/domain/model/profile.dart';
 import '../../utils/firebase_store.dart';
 
 class IntroLevelScreen extends StatefulWidget {
-  const IntroLevelScreen({super.key});
+  final String name;
+
+  const IntroLevelScreen({super.key, required this.name});
 
   @override
   State<IntroLevelScreen> createState() => _IntroLevelScreenState();
@@ -229,7 +231,7 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
                             if (user != null) {
                               await _firebaseStore.updateProfile(
                                   Profile(
-                                      name: user.displayName ?? 'Default Name',
+                                      name: widget.name,
                                       email: user.email,
                                       joinDate: user.metadata.creationTime ?? DateTime.now(),
                                       lastSignInTime: user.metadata.lastSignInTime ?? DateTime.now(),
