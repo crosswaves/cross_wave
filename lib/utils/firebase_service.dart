@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../../domain/model/profile.dart';
+
+import '../data/domain/model/profile.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -74,6 +75,7 @@ class FirebaseAuthService {
           weeklyProgress: 0,
           dailyProgress: 0,
           remainingChats: 5,
+          theme: ['life'],
         ));
         return userCredential.user; // 로그인된 사용자 정보 반환
       } else {

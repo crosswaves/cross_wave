@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speak_talk/data/domain/model/profile.dart';
 import 'package:flutter_speak_talk/presentation/screen/intro_level_screen.dart';
 
-import '../../domain/model/profile.dart';
 import '../../utils/firebase_store.dart';
 
 class IntroNameScreen extends StatefulWidget {
@@ -124,17 +124,15 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
                             Profile(
                               name: _nameController.text,
                               email: user.email,
-                              joinDate:
-                                  user.metadata.creationTime ?? DateTime.now(),
-                              lastSignInTime: user.metadata.lastSignInTime ??
-                                  DateTime.now(),
-                              profilePicture: user.photoURL ??
-                                  'https://via.placeholder.com/150',
+                              joinDate: user.metadata.creationTime ?? DateTime.now(),
+                              lastSignInTime: user.metadata.lastSignInTime ?? DateTime.now(),
+                              profilePicture: user.photoURL ?? 'https://via.placeholder.com/150',
                               membershipLevel: '일반',
                               level: 'Iron',
                               weeklyProgress: 0,
                               dailyProgress: 0,
                               remainingChats: 5,
+                              theme: [''],
                             ),
                           );
                         } else {
