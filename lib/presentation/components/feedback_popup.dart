@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import '../screen/talk_feedback_screen.dart';
+import 'package:flutter_speak_talk/presentation/screen/talk_feedback_screen.dart';
 
-class FeedbackPopup extends StatefulWidget {
-  const FeedbackPopup({super.key});
+class FeedbackPopup extends StatelessWidget {
+  final String conversationId;
 
-  @override
-  FeedbackPopupState createState() => FeedbackPopupState();
-}
+  const FeedbackPopup({Key? key, required this.conversationId});
 
-class FeedbackPopupState extends State<FeedbackPopup> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -23,9 +20,11 @@ class FeedbackPopupState extends State<FeedbackPopup> {
           onPressed: () {
             // Navigate to FeedbackScreen on button press
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TalkFeedbackScreen()));
+              context,
+              MaterialPageRoute(
+                builder: (context) => TalkFeedbackScreen(conversationId: conversationId),
+              ),
+            );
           },
           child: const Text('Yes'),
         ),

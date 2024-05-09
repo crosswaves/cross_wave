@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_screen.dart';
-import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_speak_talk/auth_utils.dart';
 import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
@@ -31,8 +30,8 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     GoRouter router = GoRouter(
+      // initialLocation: '/login',
       initialLocation: '/login',
-      // initialLocation: '/theme_set',
       routes: [
         GoRoute(
           path: '/login',
@@ -63,12 +62,6 @@ class App extends ConsumerWidget {
           builder: (BuildContext context, GoRouterState state) => InfoScreen(),
         ),
         GoRoute(
-          path: '/theme_set',
-          builder: (BuildContext context, GoRouterState state) {
-            return SelectThemeScreen(title: 'title', onSelected: (String title) {});
-          },
-        ),
-        GoRoute(
             path: '/level_set/:name',
             builder: (BuildContext context, GoRouterState state) {
               final name = state.pathParameters['name'] ?? 'Default name';
@@ -82,8 +75,8 @@ class App extends ConsumerWidget {
         if (state.matchedLocation == '/login' && isLoggedIn) {
           return isFirstLoginCompleted ? '/' : '/name_set';
         } else if (!isLoggedIn) {
+          // return '/login';
           return '/login';
-          // return '/theme_set';
         }
 
         return null;

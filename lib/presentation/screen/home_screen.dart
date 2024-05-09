@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
-import '../../data/domain/model/profile.dart';
+import '../../domain/model/profile.dart';
 import 'info_screen.dart';
 import 'talk_archive_screen.dart';
 
@@ -64,12 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _widgetOptions = [
       buildHomeTab(),
-      SelectThemeScreen(
-        title: '주제를 선택해주세요',
-        onSelected: (String title) {
-          print('Selected: $title');
-        },
-      ),
+      const SelectThemeScreen(),
       InfoScreen(),
     ];
     BackButtonInterceptor.add(myInterceptor);

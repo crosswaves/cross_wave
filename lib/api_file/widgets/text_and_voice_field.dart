@@ -5,6 +5,7 @@ import '../providers/chats_provider.dart';
 import '../services/ai_handler.dart';
 import '../services/voice_handler.dart';
 import 'toggle_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum InputMode {
   text,
@@ -141,6 +142,7 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
       id: id,
       message: message,
       isMe: isMe,
+      timestamp: Timestamp.now(),
     ));
   }
 }

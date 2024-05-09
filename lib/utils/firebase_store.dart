@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../data/domain/model/profile.dart';
+import '../domain/model/profile.dart';
 
 class FirebaseStoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -57,18 +56,9 @@ class FirebaseStoreService {
       level: data['level'] as String,
       weeklyProgress: data['weeklyProgress'] as int,
       dailyProgress: data['dailyProgress'] as int,
-      remainingChats: data['remainingChats'] as int,
-      theme: _parseThemeList(data['theme']), // int 형식 필드
+      remainingChats: data['remainingChats'] as int, // int 형식 필드
     );
   }
-
-  List<String> _parseThemeList(dynamic themeField) {
-    if (themeField is List) {
-      return List<String>.from(themeField.map((item) => item.toString()));
-    }
-    return []; // Return an empty list if the field is missing or is not a list
-  }
-
 
 // 프로필 업데이트
   Future<void> updateProfile(Profile profile) async {
@@ -80,21 +70,6 @@ class FirebaseStoreService {
           .update(profile.toJson());
     } else {
       throw Exception('No authenticated user found');
-    }
-  }
-
-  // 특정 필드만 업데이트하는 메서드
-  Future<void> updateProfileField(String userId, Map<String, dynamic> updates) async {
-    try {
-    await _firestore.collection('profiles').doc(userId).update(updates);
-    } on FirebaseException catch (e) {
-      // Firebase 특정 예외 처리
-      print('Firebase error updating profile field: ${e.message}');
-      throw Exception('Firebase error: ${e.code} - ${e.message}');
-    } catch (e) {
-      // 다른 모든 예외 처리
-      print('General error updating profile field: $e');
-      throw Exception('Error updating profile field: $e');
     }
   }
 
