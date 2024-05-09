@@ -10,6 +10,7 @@ class Profile {
   int remainingChats;
   String? email;  // 추가된 이메일 필드
   DateTime? lastSignInTime;  // 추가된 마지막 로그인 시간 필드
+  List<String>? theme;
 
   Profile({
     this.id = '',
@@ -23,6 +24,7 @@ class Profile {
     required this.remainingChats,
     required this.email,  // 생성자에 이메일 추가
     required this.lastSignInTime,  // 생성자에 마지막 로그인 시간 추가
+    required this.theme,
   });
 
   Profile copyWith({
@@ -37,6 +39,7 @@ class Profile {
     int? remainingChats,
     String? email,
     DateTime? lastSignInTime,
+    List<String>? theme,
   }) {
     return Profile(
       id: id ?? this.id,
@@ -50,6 +53,7 @@ class Profile {
       remainingChats: remainingChats ?? this.remainingChats,
       email: email ?? this.email,
       lastSignInTime: lastSignInTime ?? this.lastSignInTime,
+      theme: theme ?? this.theme,
     );
   }
 
@@ -64,6 +68,7 @@ class Profile {
     'remainingChats': remainingChats,
     'email': email,  // JSON 변환 시 이메일 추가
     'lastSignInTime': lastSignInTime?.toIso8601String(),  // JSON 변환 시 마지막 로그인 시간 추가
+    'theme': theme ?? [],
   };
 
   static Profile fromJson(Map<String, dynamic> json) => Profile(
@@ -78,5 +83,6 @@ class Profile {
     remainingChats: json['remainingChats'] ?? 0,
     email: json['email'],  // JSON으로부터 이메일 파싱
     lastSignInTime: json['lastSignInTime'] != null ? DateTime.parse(json['lastSignInTime']) : null,  // JSON으로부터 마지막 로그인 시간 파싱
+    theme: List<String>.from(json['theme'] ?? []),
   );
 }

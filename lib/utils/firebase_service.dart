@@ -75,6 +75,7 @@ class FirebaseAuthService {
           weeklyProgress: 0,
           dailyProgress: 0,
           remainingChats: 5,
+          theme: ['life'],
         ));
         return userCredential.user; // 로그인된 사용자 정보 반환
       } else {
