@@ -1,5 +1,4 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_speak_talk/utils/firebase_store.dart';
 import '../../data/domain/model/profile.dart';
 import 'info_screen.dart';
 import 'talk_archive_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
