@@ -64,7 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _widgetOptions = [
       buildHomeTab(),
-      const SelectThemeScreen(),
+      SelectThemeScreen(
+        title: '주제를 선택해주세요',
+        onSelected: (String title) {
+          print('Selected: $title');
+        },
+      ),
       InfoScreen(),
     ];
     BackButtonInterceptor.add(myInterceptor);

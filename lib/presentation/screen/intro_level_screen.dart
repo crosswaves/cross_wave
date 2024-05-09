@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/home_screen.dart';
 
-import '../../data/domain/model/profile.dart';
+import '../../domain/model/profile.dart';
 import '../../utils/firebase_store.dart';
 
 class IntroLevelScreen extends StatefulWidget {
