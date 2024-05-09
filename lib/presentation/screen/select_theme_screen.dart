@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/components/select_theme_card.dart';
 import 'package:flutter_speak_talk/presentation/screen/talk_screen.dart';
-import 'package:go_router/go_router.dart';
 
 class SelectThemeScreen extends StatelessWidget {
   const SelectThemeScreen({super.key});
@@ -12,9 +10,9 @@ class SelectThemeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('주제 선택하기'),
+        title: const Text('주제 선택하기'),
         centerTitle: true,
-        backgroundColor: Color(0xFFC4E6F3),
+        backgroundColor: const Color(0xFFC4E6F3),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -31,31 +29,13 @@ class SelectThemeScreen extends StatelessWidget {
           child: Column(
             children: [
               _themeTopText(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _gridItems(),
               _bottomButton(context),
             ],
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.speaker_phone),
-      //       label: 'Speak',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.account_box),
-      //       label: 'Info',
-      //     ),
-      //   ],
-      //   selectedItemColor: Colors.white,
-      //   backgroundColor: Color(0xFFC4E6F3),
-      // ),
     );
   }
 
@@ -68,7 +48,7 @@ class SelectThemeScreen extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     textAlign: TextAlign.center,
                     '관심있는 주제를\n 모두 선택해 주세요',
                     style: TextStyle(
@@ -79,7 +59,7 @@ class SelectThemeScreen extends StatelessWidget {
                   ),
                   RichText(
                     textAlign: TextAlign.center,
-                    text: TextSpan(
+                    text: const TextSpan(
                       style: TextStyle(
                         // 기본 텍스트 스타일
                         fontSize: 16,
@@ -136,7 +116,7 @@ class SelectThemeScreen extends StatelessWidget {
       child: ElevatedButton(
         clipBehavior: Clip.none,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF0D427F),
+          backgroundColor: const Color(0xFF0D427F),
           minimumSize: const Size(300, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),

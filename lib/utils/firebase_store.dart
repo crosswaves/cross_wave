@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../data/domain/model/profile.dart';
+import '../domain/model/profile.dart';
 
 class FirebaseStoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

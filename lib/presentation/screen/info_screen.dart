@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_photo_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../data/domain/model/profile.dart';
+import '../../domain/model/profile.dart';
 import '../../utils/firebase_service.dart';
 import '../../utils/firebase_store.dart';
 import 'login_screen.dart';
