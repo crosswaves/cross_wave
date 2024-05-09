@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/home_screen.dart';
-import '../../domain/model/profile.dart';
+
+import '../../data/domain/model/profile.dart';
 import '../../utils/firebase_store.dart';
 
 class IntroLevelScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStoreService _firebaseStore = FirebaseStoreService();
+
 
   String selectedLevel = '';
   bool isPressed0 = false;
@@ -58,7 +60,10 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
@@ -119,9 +124,9 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
                       style: TextButton.styleFrom(
                         minimumSize: const Size(300, 100),
                         maximumSize: const Size(300, 100),
-                        backgroundColor: selectedLevel == 'Iron'
-                            ? Colors.amber
-                            : Colors.lightBlue,
+                        backgroundColor:
+                        selectedLevel == 'Iron' ? Colors.amber : Colors
+                            .lightBlue,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: const BorderSide(color: Colors.white, width: 2),
@@ -144,9 +149,9 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
                       style: TextButton.styleFrom(
                         minimumSize: const Size(300, 100),
                         maximumSize: const Size(300, 100),
-                        backgroundColor: selectedLevel == 'Bronze'
-                            ? Colors.amber
-                            : Colors.lightBlue,
+                        backgroundColor:
+                        selectedLevel == 'Bronze' ? Colors.amber : Colors
+                            .lightBlue,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: const BorderSide(color: Colors.white, width: 2),
@@ -169,9 +174,9 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
                       style: TextButton.styleFrom(
                         minimumSize: const Size(300, 100),
                         maximumSize: const Size(300, 100),
-                        backgroundColor: selectedLevel == 'Silver'
-                            ? Colors.amber
-                            : Colors.lightBlue,
+                        backgroundColor:
+                        selectedLevel == 'Silver' ? Colors.amber : Colors
+                            .lightBlue,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: const BorderSide(color: Colors.white, width: 2),
@@ -194,9 +199,9 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
                       style: TextButton.styleFrom(
                         minimumSize: const Size(300, 100),
                         maximumSize: const Size(300, 100),
-                        backgroundColor: selectedLevel == 'Gold'
-                            ? Colors.amber
-                            : Colors.lightBlue,
+                        backgroundColor:
+                        selectedLevel == 'Gold' ? Colors.amber : Colors
+                            .lightBlue,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: const BorderSide(color: Colors.white, width: 2),
@@ -224,22 +229,19 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
                             User? user = _auth.currentUser;
                             if (user != null) {
                               await _firebaseStore.updateProfile(
-                                Profile(
-                                  name: widget.name,
-                                  email: user.email,
-                                  joinDate: user.metadata.creationTime ??
-                                      DateTime.now(),
-                                  lastSignInTime:
-                                      user.metadata.lastSignInTime ??
-                                          DateTime.now(),
-                                  profilePicture: user.photoURL ??
-                                      'https://via.placeholder.com/150',
-                                  membershipLevel: '일반',
-                                  level: selectedLevel,
-                                  weeklyProgress: 0,
-                                  dailyProgress: 0,
-                                  remainingChats: 5,
-                                ),
+                                  Profile(
+                                      name: widget.name,
+                                      email: user.email,
+                                      joinDate: user.metadata.creationTime ?? DateTime.now(),
+                                      lastSignInTime: user.metadata.lastSignInTime ?? DateTime.now(),
+                                      profilePicture: user.photoURL ?? 'https://via.placeholder.com/150',
+                                      membershipLevel: '일반',
+                                      level: selectedLevel,
+                                      weeklyProgress: 0,
+                                      dailyProgress: 0,
+                                      remainingChats: 5,
+                                      theme: [''],
+                                  ),
                               );
                               Navigator.push(
                                 context,
