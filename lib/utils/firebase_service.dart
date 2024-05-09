@@ -48,7 +48,7 @@ class FirebaseAuthService {
 
       // google 인증 세부 정보 가져오기
       final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      await googleUser.authentication;
 
       // Firebase에 로그인하기 위한 자격 증명 생성
       final OAuthCredential credential = GoogleAuthProvider.credential(
@@ -58,7 +58,7 @@ class FirebaseAuthService {
 
       // Firebase에 사용자 로그인
       final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      await _auth.signInWithCredential(credential);
 
       if (userCredential != null) {
         // 사용자 정보가 null이 아닌 경우에만 Firestore에 사용자 정보 저장
@@ -74,6 +74,7 @@ class FirebaseAuthService {
           weeklyProgress: 0,
           dailyProgress: 0,
           remainingChats: 5,
+          theme: ['life'],
         ));
         return userCredential.user; // 로그인된 사용자 정보 반환
       } else {
