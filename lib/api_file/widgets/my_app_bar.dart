@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../presentation/screen/home_screen.dart';
 import '../providers/active_theme_provider.dart';
 import 'theme_switch.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,20 +9,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: TextButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ),
-          );
-        },
-        style: TextButton.styleFrom(
-          foregroundColor: Theme.of(context).colorScheme.onPrimary, // 텍스트 색상
-        ),
-        child: const Text('통화 종료'),
-      ),
+      title: const Text('대화'),
+      automaticallyImplyLeading: false, // 뒤로가기 버튼 없애기
       actions: [
         Row(
           children: [

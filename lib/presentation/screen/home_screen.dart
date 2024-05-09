@@ -1,15 +1,13 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
-import '../../data/domain/model/profile.dart';
+import '../../domain/model/profile.dart';
 import 'info_screen.dart';
 import 'talk_archive_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,8 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final FirebaseStoreService _firebaseStoreService =
-      FirebaseStoreService();
+  final FirebaseStoreService _firebaseStoreService = FirebaseStoreService();
 
   List<Profile> profiles = [];
 
@@ -165,7 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(snapshot.data!.profilePicture ?? ''),
+                          backgroundImage:
+                              NetworkImage(snapshot.data!.profilePicture ?? ''),
                           radius: 50,
                           backgroundColor: Colors.red,
                         ),
