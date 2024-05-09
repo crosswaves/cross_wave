@@ -241,6 +241,7 @@ class _IntroLevelScreenState extends State<IntroLevelScreen> {
                                       weeklyProgress: 0,
                                       dailyProgress: 0,
                                       remainingChats: 5,
+                                      theme: [''],
                                   ),
                               );
                               Navigator.push(

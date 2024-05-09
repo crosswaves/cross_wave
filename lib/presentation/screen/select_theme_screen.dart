@@ -1,20 +1,103 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speak_talk/presentation/components/select_theme_card.dart';
 import 'package:flutter_speak_talk/presentation/screen/talk_screen.dart';
-import 'package:go_router/go_router.dart';
 
-class SelectThemeScreen extends StatelessWidget {
-  const SelectThemeScreen({super.key});
+import '../../utils/firebase_store.dart';
+
+class SelectThemeScreen extends StatefulWidget {
+  final String title;
+  final void Function(String) onSelected;
+
+  const SelectThemeScreen(
+      {super.key, required this.title, required this.onSelected});
+
+  @override
+  State<SelectThemeScreen> createState() => _SelectThemeScreenState();
+}
+
+class _SelectThemeScreenState extends State<SelectThemeScreen> {
+  final List<String> _selectedThemes = [];
+  final themeList = [
+    '커리어',
+    '여행',
+    '영화/음악',
+    '가족',
+    '문화',
+    '연애',
+    '쇼핑',
+    '음식',
+    '운동',
+  ];
+  Color? backgroundColor = const Color(0xFFA3C4D6); // 각 타일의 배경색
+
+  void _toggleTheme(String theme) {
+    setState(() {
+      if (_selectedThemes.contains(theme)) {
+        _selectedThemes.remove(theme);
+      } else {
+        _selectedThemes.add(theme);
+      }
+    });
+  }
+
+  void _saveTheme() {
+    final FirebaseStoreService _firebaseStore = FirebaseStoreService();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      _firebaseStore.updateProfileField(user.uid, {'theme': _selectedThemes});
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const TalkScreen()));
+    } else {
+      throw Exception('No user currently found');
+    }
+  }
+
+  // void _toggleBackgroundColor() {
+  //   setState(() {
+  //     // 배경색이 현재 설정된 색과 다른 색으로 토글
+  //     backgroundColor = backgroundColor == const Color(0xFF0D427F)
+  //         ? Color(0xFFA3C4D6)
+  //         : const Color(0xFF0D427F);
+  //   });
+  // }
+
+  // 각 타일의 제목
+  Widget _themeCardWidget(String theme, bool isSelected) {
+    return GestureDetector(
+      onTap: () => _toggleTheme(theme),
+      child: Card(
+        elevation: 2.0, // 카드의 그림자 깊이
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Container(
+            alignment: Alignment.center,
+            color:
+                isSelected ? const Color(0xFF0D427F) : const Color(0xFFA3C4D6),
+            child: Text(
+              theme,
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                color: isSelected ? Color(0xFFA3C4D6) : Color(0xFF0D427F),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('주제 선택하기'),
+        title: const Text('주제 선택하기'),
         centerTitle: true,
-        backgroundColor: Color(0xFFC4E6F3),
+        backgroundColor: const Color(0xFFC4E6F3),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -31,31 +114,13 @@ class SelectThemeScreen extends StatelessWidget {
           child: Column(
             children: [
               _themeTopText(),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               _gridItems(),
               _bottomButton(context),
             ],
           ),
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.speaker_phone),
-      //       label: 'Speak',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.account_box),
-      //       label: 'Info',
-      //     ),
-      //   ],
-      //   selectedItemColor: Colors.white,
-      //   backgroundColor: Color(0xFFC4E6F3),
-      // ),
     );
   }
 
@@ -68,7 +133,7 @@ class SelectThemeScreen extends StatelessWidget {
             Center(
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     textAlign: TextAlign.center,
                     '관심있는 주제를\n 모두 선택해 주세요',
                     style: TextStyle(
@@ -79,7 +144,7 @@ class SelectThemeScreen extends StatelessWidget {
                   ),
                   RichText(
                     textAlign: TextAlign.center,
-                    text: TextSpan(
+                    text: const TextSpan(
                       style: TextStyle(
                         // 기본 텍스트 스타일
                         fontSize: 16,
@@ -107,7 +172,7 @@ class SelectThemeScreen extends StatelessWidget {
   }
 
   Widget _gridItems() {
-    return GridView(
+    return GridView.builder(
       padding: const EdgeInsets.all(20),
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -116,17 +181,12 @@ class SelectThemeScreen extends StatelessWidget {
         crossAxisSpacing: 9,
         mainAxisSpacing: 9,
       ),
-      children: const [
-        SelectThemeItems(title: '커리어'),
-        SelectThemeItems(title: '여행'),
-        SelectThemeItems(title: '영화/음악'),
-        SelectThemeItems(title: '친목'),
-        SelectThemeItems(title: '문화'),
-        SelectThemeItems(title: '연애'),
-        SelectThemeItems(title: '쇼핑'),
-        SelectThemeItems(title: '음식'),
-        SelectThemeItems(title: '가족'),
-      ],
+      itemCount: themeList.length,
+      itemBuilder: (BuildContext context, index) {
+        final theme = themeList[index];
+        final isSelected = _selectedThemes.contains(theme);
+        return _themeCardWidget(theme, isSelected);
+      },
     );
   }
 
@@ -136,15 +196,14 @@ class SelectThemeScreen extends StatelessWidget {
       child: ElevatedButton(
         clipBehavior: Clip.none,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF0D427F),
+          backgroundColor: const Color(0xFF0D427F),
           minimumSize: const Size(300, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
         ),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const TalkScreen()));
+          _saveTheme();
         },
         child: const Text(
           '다음',

@@ -19,8 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final FirebaseStoreService _firebaseStoreService =
-      FirebaseStoreService();
+  final FirebaseStoreService _firebaseStoreService = FirebaseStoreService();
 
   List<Profile> profiles = [];
 
@@ -67,7 +66,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _widgetOptions = [
       buildHomeTab(),
-      const SelectThemeScreen(),
+      SelectThemeScreen(
+        title: '주제를 선택해주세요',
+        onSelected: (String title) {
+          print('Selected: $title');
+        },
+      ),
       InfoScreen(),
     ];
     BackButtonInterceptor.add(myInterceptor);
@@ -165,7 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircleAvatar(
-                          backgroundImage: NetworkImage(snapshot.data!.profilePicture ?? ''),
+                          backgroundImage:
+                              NetworkImage(snapshot.data!.profilePicture ?? ''),
                           radius: 50,
                           backgroundColor: Colors.red,
                         ),

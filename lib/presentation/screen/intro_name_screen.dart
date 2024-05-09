@@ -132,6 +132,7 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
                               weeklyProgress: 0,
                               dailyProgress: 0,
                               remainingChats: 5,
+                              theme: [''],
                             ),
                           );
                         } else {
