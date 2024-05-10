@@ -53,6 +53,7 @@ dependencies:
   chat_gpt_sdk: ^3.0.7
   speech_to_text: ^6.6.1
   flutter_tts: ^3.8.1
+  dart_openai: ^5.1.0
 
 dev_dependencies:
   flutter_test:
