@@ -1,4 +1,5 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
@@ -88,24 +89,16 @@ class _HomeScreenState extends State<HomeScreen> {
         index: _selectedIndex,
         children: _widgetOptions,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Speak',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'Info',
-          ),
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _selectedIndex,
+        backgroundColor: Colors.transparent,
+        color: Colors.indigo,
+        buttonBackgroundColor: Colors.indigo,
+        items: const <Widget>[
+          Icon(Icons.home, size: 30, color: Colors.white),
+          Icon(Icons.account_box, size: 30, color: Colors.white),
+          Icon(Icons.more_horiz, size: 30, color: Colors.white),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.indigo,
-        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
     );
@@ -172,19 +165,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           radius: 50,
                           backgroundColor: Colors.red,
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Column(
                           children: [
                             Text(
                               '이름: ${snapshot.data!.name}',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.white),
                             ),
                             Text(
                               // 멤버쉽(회원) 레벨
                               '${snapshot.data!.membershipLevel} 회원 입니다',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.white),
                             ),
                           ],
                         ),
@@ -194,13 +187,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 30),
+                        const SizedBox(width: 30),
                         SizedBox(
                           width: 200,
                           height: 25,
                           child: Text(
                             'AI 채팅 잔여횟수 (${snapshot.data!.remainingChats} / 5)',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -216,7 +209,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: LinearProgressIndicator(
                         value: snapshot.data!.remainingChats / 5,
                         backgroundColor: Colors.black,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+                        valueColor:
+                            const AlwaysStoppedAnimation<Color>(Colors.amber),
                       ),
                     ),
                     const SizedBox(height: 50),
@@ -227,10 +221,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               '${snapshot.data!.level} 레벨',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.white),
                             ),
-                            Image(
+                            const Image(
                               width: 30,
                               height: 30,
                               image: AssetImage('assets/bronze.png'),
