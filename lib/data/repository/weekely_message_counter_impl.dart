@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../domain/repository/messge_count.dart';
+import '../../domain/repository/weekely_message_counter.dart';
 
-class MessageCountImpl implements MessageCount {
+class WeeklyMessageCounterImpl implements WeeklyMessageCounter {
   final CollectionReference _conversationCollection = FirebaseFirestore.instance.collection('conversations');
 
   @override
-  Future<List<int>> getMessageCount(String uid) async {
+  Future<List<int>> getWeeklyMessageCount(String uid) async {
     try {
       // 현재 날짜의 시작 시간 (12:00 AM)
       DateTime now = DateTime.now();
