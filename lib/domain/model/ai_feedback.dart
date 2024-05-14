@@ -12,9 +12,9 @@ class AiFeedback {
         content: [
           OpenAIChatCompletionChoiceMessageContentItemModel.text(
             '''
-            1. 대화의 문법에서 틀린 점이 있는지 확인하고, 있다면 올바른 문법을 안내하세요.
-            2. 더 일상적으로 많이 쓰이는 좋은 표현이 있으면 그 표현을 통한 대답 예시를 작성하세요.
-            3. AI는 한글로 피드백해야 한다.
+            1. Check for any mistakes in the grammar of the conversation, and if so, guide the correct grammar.
+            2. If there is a good expression that is more commonly used, write an example of an answer using that expression.
+            3. You must explain it in Korean.
             ''',
           ),
         ],
