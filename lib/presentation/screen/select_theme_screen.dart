@@ -100,16 +100,16 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
         backgroundColor: const Color(0xFFC4E6F3),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            colors: [
-              Colors.black,
-              Colors.lightBlue,
-            ],
-          ),
-        ),
+        // decoration: const BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.bottomLeft,
+        //     end: Alignment.topRight,
+        //     colors: [
+        //       Colors.black,
+        //       Colors.lightBlue,
+        //     ],
+        //   ),
+        // ),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -139,7 +139,6 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
                     ),
                   ),
                   RichText(
@@ -148,7 +147,6 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
                       style: TextStyle(
                         // 기본 텍스트 스타일
                         fontSize: 16,
-                        color: Colors.white,
                       ),
                       children: <TextSpan>[
                         TextSpan(text: '관심있는 주제를 \n'),
@@ -196,7 +194,6 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
       child: ElevatedButton(
         clipBehavior: Clip.none,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF0D427F),
           minimumSize: const Size(300, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
@@ -210,7 +207,6 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
           ),
         ),
       ),

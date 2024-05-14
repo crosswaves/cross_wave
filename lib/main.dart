@@ -6,8 +6,6 @@ import 'package:flutter_speak_talk/presentation/screen/info_screen.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_speak_talk/auth_utils.dart';
 import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
-import 'api_file/constants/themes.dart';
-import 'api_file/providers/active_theme_provider.dart';
 import 'firebase_options.dart';
 import 'presentation/screen/home_screen.dart';
 import 'presentation/screen/intro_level_screen.dart';
@@ -31,7 +29,7 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     GoRouter router = GoRouter(
       // initialLocation: '/login',
-      initialLocation: '/login',
+      initialLocation: '/',
       routes: [
         GoRoute(
           path: '/login',
@@ -76,23 +74,43 @@ class App extends ConsumerWidget {
           return isFirstLoginCompleted ? '/' : '/name_set';
         } else if (!isLoggedIn) {
           // return '/login';
-          return '/login';
+          return '/';
         }
 
         return null;
       },
     );
 
-    final activeTheme = ref.watch(activeThemeProvider);
+    // final activeTheme = ref.watch(activeThemeProvider);
     return MaterialApp.router(
       title: 'Flutter Speak',
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
-      theme: lightTheme,
-      darkTheme: darkTheme,
       debugShowCheckedModeBanner: false,
-      themeMode: activeTheme == Themes.dark ? ThemeMode.dark : ThemeMode.light,
+      // themeMode: activeTheme == Themes.dark ? ThemeMode.dark : ThemeMode.light,
+      // theme: lightTheme,
+      // darkTheme: darkTheme,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFF003168),
+          secondary: Color(0xFF8A91A1),
+          tertiary: Color(0xFFA189A4),
+          brightness: Brightness.light,
+        ),
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFF003168),
+          secondary: Color(0xFF8A91A1),
+          tertiary: Color(0xFFA189A4),
+          brightness: Brightness.dark,
+        ),
+        brightness: Brightness.dark,
+      ),
+      themeMode: ThemeMode.system,
     );
   }
 }
