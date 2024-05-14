@@ -12,7 +12,6 @@ import 'presentation/screen/intro_level_screen.dart';
 import 'presentation/screen/intro_name_screen.dart';
 import 'presentation/screen/info_photo_screen.dart';
 import 'presentation/screen/info_pay_screen.dart';
-import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -95,14 +94,21 @@ class App extends ConsumerWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Color(0xFF0A53E0),
-          secondary: Color(0xFF0AB2E0),
-          brightness: Brightness.light,),
-        textTheme: MaterialTheme(TextTheme()).textTheme,
+          seedColor: Color(0xFF003168),
+          secondary: Color(0xFF8A91A1),
+          tertiary: Color(0xFFA189A4),
+          brightness: Brightness.light,
+        ),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
-        // colorScheme: darkTheme.colorScheme,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFF003168),
+          secondary: Color(0xFF8A91A1),
+          tertiary: Color(0xFFA189A4),
+          brightness: Brightness.dark,
+        ),
+        brightness: Brightness.dark,
       ),
       themeMode: ThemeMode.system,
     );

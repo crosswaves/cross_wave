@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/chat_model.dart';
 import '../providers/chats_provider.dart';
 import '../services/ai_handler.dart';
-import '../services/voice_handler.dart';
+import '../services/voice_handler.dart'; // 수정된 VoiceHandler 사용
 import 'toggle_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -22,21 +22,21 @@ class TextAndVoiceField extends ConsumerStatefulWidget {
 class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
   InputMode _inputMode = InputMode.voice;
   final _messageController = TextEditingController();
-  final AIHandler _openAI = AIHandler();
-  final VoiceHandler voiceHandler = VoiceHandler();
+  final AIHandler _aiHandler = AIHandler();
+  final VoiceHandler _voiceHandler = VoiceHandler();
   var _isReplying = false;
   var _isListening = false;
 
   @override
   void initState() {
-    voiceHandler.initSpeech();
     super.initState();
+    _voiceHandler.initSpeech();
+    sendInitialMessage();
   }
 
   @override
   void dispose() {
     _messageController.dispose();
-    _openAI.dispose();
     super.dispose();
   }
 
@@ -58,19 +58,14 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
                 borderRadius: BorderRadius.circular(12),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-                borderRadius: BorderRadius.circular(
-                  12,
-                ),
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
         ),
-        const SizedBox(
-          width: 06,
-        ),
+        const SizedBox(width: 6),
         ToggleButton(
           isListening: _isListening,
           isReplying: _isReplying,
@@ -93,16 +88,16 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
   }
 
   void sendVoiceMessage() async {
-    if (!voiceHandler.isEnabled) {
-      print('Not supported');
+    if (!_voiceHandler.isEnabled) {
+      print('Voice not supported');
       return;
     }
-    if (voiceHandler.speechToText.isListening) {
-      await voiceHandler.stopListening();
+    if (_voiceHandler.speechToText.isListening) {
+      await _voiceHandler.stopListening();
       setListeningState(false);
     } else {
       setListeningState(true);
-      final result = await voiceHandler.startListening();
+      final result = await _voiceHandler.startListening();
       setListeningState(false);
       sendTextMessage(result);
     }
@@ -111,11 +106,9 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
   void sendTextMessage(String message) async {
     setReplyingState(true);
     addToChatList(message, true, DateTime.now().toString());
-    addToChatList('Typing...', false, 'typing');
-    setInputMode(InputMode.voice);
-    final aiResponse = await _openAI.getResponse(message);
-    removeTyping();
+    final aiResponse = await _aiHandler.getResponse(message);
     addToChatList(aiResponse, false, DateTime.now().toString());
+    _voiceHandler.speak(aiResponse); // AI 응답을 TTS로 읽기
     setReplyingState(false);
   }
 
@@ -131,11 +124,6 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
     });
   }
 
-  void removeTyping() {
-    final chats = ref.read(chatsProvider.notifier);
-    chats.removeTyping();
-  }
-
   void addToChatList(String message, bool isMe, String id) {
     final chats = ref.read(chatsProvider.notifier);
     chats.add(ChatModel(
@@ -144,5 +132,13 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
       isMe: isMe,
       timestamp: Timestamp.now(),
     ));
+  }
+
+  Future<void> sendInitialMessage() async {
+    // 초기 메시지를 사용자 정의 텍스트로 설정
+    const String initialMessage = "Welcome! How can I assist you today?";
+    final aiResponse = await _aiHandler.getResponse(initialMessage);
+    addToChatList(aiResponse, false, DateTime.now().toString());
+    _voiceHandler.speak(aiResponse);
   }
 }

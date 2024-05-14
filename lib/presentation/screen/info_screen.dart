@@ -23,16 +23,16 @@ class InfoScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-            colors: [
-              Colors.black,
-              Colors.lightBlue,
-            ],
-          ),
-        ),
+        // decoration: const BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.bottomLeft,
+        //     end: Alignment.topRight,
+        //     colors: [
+        //       Colors.black,
+        //       Colors.lightBlue,
+        //     ],
+        //   ),
+        // ),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -80,12 +80,12 @@ class InfoScreen extends StatelessWidget {
                                       right: 60,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          color: Colors.transparent,
+                                          // color: Colors.transparent,
                                           shape: BoxShape.circle,
                                         ),
                                         child: const Icon(
                                           Icons.camera_alt,
-                                          color: Colors.grey,
+                                          // color: Colors.grey,
                                           size: 30,
                                         ),
                                       ),
@@ -96,7 +96,7 @@ class InfoScreen extends StatelessWidget {
                                 // 데이터가 없는 경우 빈 프로필 사진 표시
                                 return const CircleAvatar(
                                   radius: 75,
-                                  backgroundColor: Colors.grey,
+                                  // backgroundColor: Colors.grey,
                                 );
                               }
                             },
@@ -129,7 +129,7 @@ class InfoScreen extends StatelessWidget {
                           child: Container(
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(15)),
-                              color: Colors.blueGrey, // 배경색 지정
+                              // color: Colors.blueGrey, // 배경색 지정
                               border: Border(
                                 left: BorderSide(width: 1.0), // 왼쪽 테두리 추가
                                 bottom: BorderSide(width: 1.0), // 아래쪽 테두리 추가
@@ -142,7 +142,7 @@ class InfoScreen extends StatelessWidget {
                                 const SizedBox(width: 16.0),
                                 Text(
                                   title,
-                                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                                  style: const TextStyle(fontSize: 18),
                                 ),
                               ],
                             ),
@@ -189,15 +189,15 @@ class InfoScreen extends StatelessWidget {
             children: [
               Text(
                 '이름 : $name',
-                style: const TextStyle(fontSize: 22, color: Colors.white),
+                style: const TextStyle(fontSize: 22),
               ),
               Text(
                 '가입일 : $formattedCreationTime',
-                style: const TextStyle(fontSize: 18, color: Colors.white),
+                style: const TextStyle(fontSize: 18),
               ),
               Text(
                 '최근로그인 :\n $formattedLastLogin',
-                style: const TextStyle(fontSize: 18, color: Colors.white),
+                style: const TextStyle(fontSize: 18),
               ),
             ],
           );

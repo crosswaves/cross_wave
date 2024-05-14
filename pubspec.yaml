@@ -52,6 +52,9 @@ dependencies:
   flutter_riverpod: ^2.5.1
   chat_gpt_sdk: ^3.0.7
   speech_to_text: ^6.6.1
+  flutter_tts: ^3.8.1
+  dart_openai: ^5.1.0
+  curved_navigation_bar: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +85,9 @@ flutter:
     - assets/logo.png
     - assets/user.jpg
     - assets/bronze.png
+    - assets/gold.png
+    - assets/silver.png
+    - assets/iron.png
     - .env # path to your .env file
 
   # An image asset can refer to one or more resolution-specific "variants", see
