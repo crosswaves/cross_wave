@@ -1,11 +1,15 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
+import '../../data/repository/weekely_message_counter_impl.dart';
 import '../../domain/model/profile.dart';
+import '../../domain/repository/weekely_message_counter.dart';
+import '../components/achieve_bar_chart.dart';
 import 'info_screen.dart';
 import 'talk_archive_screen.dart';
 
@@ -18,11 +22,47 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseStoreService _firebaseStoreService = FirebaseStoreService();
-
-  List<Profile> profiles = [];
+  final WeeklyMessageCounter _weeklyMessageCounter = WeeklyMessageCounterImpl();
+  late List<Widget> _widgetOptions;
 
   int _selectedIndex = 0;
-  late List<Widget> _widgetOptions;
+  List<Profile> profiles = [];
+  List<int> _messageCounts = List.filled(7, 0);
+
+  Future<void> _loadMessageCounts() async {
+    try {
+      // Firebase Authentication에서 현재 로그인된 사용자의 정보 가져오기
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        // WeeklyMessageCounterImpl에서 주간 메시지 수 가져오기
+        final List<int> counts =
+            await _weeklyMessageCounter.getWeeklyMessageCount(user.uid);
+        setState(() {
+          _messageCounts = counts;
+        });
+      }
+    } catch (e) {
+      // Error handling
+      print('Failed to load message counts: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMessageCounts();
+    _widgetOptions = [
+      buildHomeTab(),
+      SelectThemeScreen(
+        title: '주제를 선택해주세요',
+        onSelected: (String title) {
+          print('Selected: $title');
+        },
+      ),
+      InfoScreen(),
+    ];
+    BackButtonInterceptor.add(myInterceptor);
+  }
 
   @override
   void dispose() {
@@ -59,22 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _widgetOptions = [
-      buildHomeTab(),
-      SelectThemeScreen(
-        title: '주제를 선택해주세요',
-        onSelected: (String title) {
-          print('Selected: $title');
-        },
-      ),
-      InfoScreen(),
-    ];
-    BackButtonInterceptor.add(myInterceptor);
-  }
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -88,24 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
         index: _selectedIndex,
         children: _widgetOptions,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Speak',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'Info',
-          ),
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _selectedIndex,
+        backgroundColor: Colors.transparent,
+        color: Colors.indigo,
+        buttonBackgroundColor: Colors.indigo,
+        items: const <Widget>[
+          Icon(Icons.home, size: 30, color: Colors.white),
+          Icon(Icons.account_box, size: 30, color: Colors.white),
+          Icon(Icons.more_horiz, size: 30, color: Colors.white),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.indigo,
-        unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
     );
@@ -172,19 +188,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           radius: 50,
                           backgroundColor: Colors.red,
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Column(
                           children: [
                             Text(
                               '이름: ${snapshot.data!.name}',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.white),
                             ),
                             Text(
                               // 멤버쉽(회원) 레벨
                               '${snapshot.data!.membershipLevel} 회원 입니다',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.white),
                             ),
                           ],
                         ),
@@ -194,13 +210,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(width: 30),
+                        const SizedBox(width: 30),
                         SizedBox(
                           width: 200,
                           height: 25,
                           child: Text(
                             'AI 채팅 잔여횟수 (${snapshot.data!.remainingChats} / 5)',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
@@ -216,7 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: LinearProgressIndicator(
                         value: snapshot.data!.remainingChats / 5,
                         backgroundColor: Colors.black,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+                        valueColor:
+                            const AlwaysStoppedAnimation<Color>(Colors.amber),
                       ),
                     ),
                     const SizedBox(height: 50),
@@ -227,10 +244,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               '${snapshot.data!.level} 레벨',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.white),
                             ),
-                            Image(
+                            const Image(
                               width: 30,
                               height: 30,
                               image: AssetImage('assets/bronze.png'),
@@ -275,63 +292,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      width: 350,
-                      height: 200,
-                      color: Colors.blue,
-                      child: BarChart(
-                        BarChartData(
-                          alignment: BarChartAlignment.spaceAround,
-                          maxY: 9,
-                          barTouchData: BarTouchData(enabled: false),
-                          titlesData: FlTitlesData(
-                            show: true,
-                            rightTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false)),
-                            topTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false)),
-                            bottomTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                reservedSize: 30,
-                                getTitlesWidget:
-                                    (double value, TitleMeta meta) {
-                                  const texts = [
-                                    '일',
-                                    '월',
-                                    '화',
-                                    '수',
-                                    '목',
-                                    '금',
-                                    '토'
-                                  ];
-                                  return SideTitleWidget(
-                                    axisSide: meta.axisSide,
-                                    space: 4.0,
-                                    child: Text(texts[value.toInt()]),
-                                  );
-                                },
-                              ),
-                            ),
-                            leftTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false)),
-                          ),
-                          gridData: const FlGridData(show: false),
-                          borderData: FlBorderData(show: false),
-                          barGroups: List.generate(
-                            7,
-                            (index) => BarChartGroupData(
-                              x: index,
-                              barRods: [
-                                BarChartRodData(
-                                  toY: index + 1,
-                                  color: Colors.amber,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: AchieveBarChart(messageCounts: _messageCounts),
                     ),
                     const SizedBox(height: 100),
                   ],
