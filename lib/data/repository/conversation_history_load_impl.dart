@@ -11,7 +11,7 @@ class ConversationHistoryLoadImpl implements ConversationHistoryLoad {
     final querySnapshot = await _firestore
         .collection('conversations')
         .where('uid', isEqualTo: uid)
-        // .orderBy('startTime', descending: true) // startTime을 기준으로 내림차순 정렬
+        .orderBy('startTime', descending: true)
         .get();
 
     // 대화 목록을 변환하여 ConversationHistory 객체의 리스트로 반환
