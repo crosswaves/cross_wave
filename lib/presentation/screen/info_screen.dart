@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_photo_screen.dart';
+import 'package:flutter_speak_talk/presentation/screen/intro_name_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/model/profile.dart';
 import '../../utils/firebase_service.dart';
@@ -47,7 +48,6 @@ class InfoScreen extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // TODO: 사진 업로드 기능 추가
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoPhotoScreen()));
                           },
                           child: FutureBuilder<Profile>(
@@ -79,7 +79,7 @@ class InfoScreen extends StatelessWidget {
                                       bottom: 60,
                                       right: 60,
                                       child: Container(
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                           // color: Colors.transparent,
                                           shape: BoxShape.circle,
                                         ),
@@ -120,7 +120,7 @@ class InfoScreen extends StatelessWidget {
                         return InkWell(
                           onTap: () {
                             if (index == 2) {
-                              _logout(context); // 로그아웃 함수 호출
+                              logout(context); // 로그아웃 함수 호출
                             } else {
                               // 요금제 업그레이드, 개인정보처리 약관 등 클릭 시 처리
                               // ... 각 항목에 해당하는 처리 코드 작성
@@ -187,9 +187,16 @@ class InfoScreen extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '이름 : $name',
-                style: const TextStyle(fontSize: 22),
+              Row(
+                children: [
+                  Text(
+                    '이름 : $name',
+                    style: const TextStyle(fontSize: 22),
+                  ),
+                  IconButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const IntroNameScreen()));
+                  }, icon: const Icon(Icons.edit)),
+                ],
               ),
               Text(
                 '가입일 : $formattedCreationTime',
@@ -214,7 +221,7 @@ class InfoScreen extends StatelessWidget {
   //   return null;
   // }
 
-  void _logout(BuildContext context) async {
+  void logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance(); // 1. SharedPreferences 인스턴스 가져오기
     await prefs.setBool('isFirstLogin', true); // 2. 'isFirstLogin' 값을 true로 설정하여 첫 번째 로그인 상태로 변경
     await _authService.signOut(); // 3. Firebase 로그아웃
