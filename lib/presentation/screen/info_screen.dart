@@ -21,19 +21,11 @@ class InfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        // decoration: const BoxDecoration(
-        //   gradient: LinearGradient(
-        //     begin: Alignment.bottomLeft,
-        //     end: Alignment.topRight,
-        //     colors: [
-        //       Colors.black,
-        //       Colors.lightBlue,
-        //     ],
-        //   ),
-        // ),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -42,7 +34,7 @@ class InfoScreen extends StatelessWidget {
                 Column(
                   children: [
                     const SizedBox(
-                      height: 80,
+                      height: 10,
                     ),
                     Row(
                       children: [
@@ -113,13 +105,13 @@ class InfoScreen extends StatelessWidget {
                     ),
                     ListView.separated(
                       shrinkWrap: true, // ListView의 높이를 감싸는 콘텐츠에 맞춥니다.
-                      itemCount: 3, // 항목 개수
+                      itemCount: 4, // 항목 개수
                       separatorBuilder: (context, index) => const Divider(), // 구분선 추가
                       itemBuilder: (context, index) {
-                        final title = ['요금제 업그레이드', '개인정보처리 약관', '로그아웃'][index];
+                        final title = ['요금제 업그레이드', '개인정보처리 약관', '홈페이지 둘러보기', '로그아웃'][index];
                         return InkWell(
                           onTap: () {
-                            if (index == 2) {
+                            if (index == 3) {
                               logout(context); // 로그아웃 함수 호출
                             } else {
                               // 요금제 업그레이드, 개인정보처리 약관 등 클릭 시 처리
@@ -129,11 +121,6 @@ class InfoScreen extends StatelessWidget {
                           child: Container(
                             decoration: const BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(15)),
-                              // color: Colors.blueGrey, // 배경색 지정
-                              border: Border(
-                                left: BorderSide(width: 1.0), // 왼쪽 테두리 추가
-                                bottom: BorderSide(width: 1.0), // 아래쪽 테두리 추가
-                              ),
                             ),
                             padding: const EdgeInsets.all(16.0), // 여백 추가
                             child: Row(
