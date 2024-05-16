@@ -140,23 +140,28 @@ class _AchieveBarChart extends StatelessWidget {
   );
 
   List<BarChartGroupData> get barGroups {
-    return List.generate(7, (index) {
+    // Get today's date
+    DateTime now = DateTime.now();
+    DateTime thisMonday = now.subtract(Duration(days: now.weekday - 1));
+    List<BarChartGroupData> barDataList = [];
 
-      DateTime now = DateTime.now(); // 현재 요일을 가져옵니다.
-      int currentDayOfWeek = now.weekday - 1; // 월요일을 0으로 시작하도록 1을 뺍니다.
-      int displayDayOfWeek = (currentDayOfWeek + index) % 7; // 그래프에 표시할 요일을 계산합니다.
-
-      return BarChartGroupData(
-        x: index,
+    // Iterate over 7 days (a week)
+    for (int i = 0; i < 7; i++) {
+      DateTime currentDate = thisMonday.add(Duration(days: i));
+      int dayOfWeek = (currentDate.weekday % 7);
+      int messageCountsIndex = dayOfWeek;
+      int count = messageCountsIndex >= 0 ? messageCounts[messageCountsIndex] : 0;
+      barDataList.add(BarChartGroupData(
+        x: i, // Use i directly as x value
         barRods: [
-          // 이번주
           BarChartRodData(
-            toY: messageCounts[displayDayOfWeek].toDouble(),
+            toY: count.toDouble(), // Set y value directly
             gradient: _barsGradient,
           ),
         ],
         showingTooltipIndicators: [0],
-      );
-    });
+      ));
+    }
+    return barDataList;
   }
 }
