@@ -1,9 +1,11 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
+import 'package:flutter_speak_talk/presentation/screen/intro_level_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
 import '../../data/repository/weekely_message_counter_impl.dart';
@@ -158,9 +160,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildHomeTab() {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black45),
-        backgroundColor: const Color(0xFFC4E6F3),
-        // title: const Text('Home'),
+        iconTheme: const IconThemeData(color: Colors.black45),
+        // backgroundColor: const Color(0xFFC4E6F3),
         actions: <Widget>[
           FutureBuilder<Profile>(
             future: _firebaseStoreService.readProfile(),
@@ -197,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 );
               } else {
-                return Text('No data available'); // 데이터 없음
+                return const Text('No data available'); // 데이터 없음
               }
             },
           ),
@@ -207,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blueGrey,
               ),
@@ -219,8 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading: Icon(Icons.attach_money),
-                  title: Text('프리미엄 업그레이드'),
+                  leading: const Icon(Icons.attach_money),
+                  title: const Text('프리미엄 업그레이드'),
                   onTap: () {
                     setState(() {
                       _selectedDrawerItem = 'Item 1';
@@ -240,8 +241,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading: Icon(Icons.account_box),
-                  title: Text('개인정보 처리약관'),
+                  leading: const Icon(Icons.account_box),
+                  title: const Text('개인정보 처리약관'),
                   onTap: () {
                     setState(() {
                       _selectedDrawerItem = 'Item 1';
@@ -262,8 +263,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: ListTile(
                   leading:
-                  Icon(Icons.dark_mode),
-                  title: Text('다크모드'),
+                  const Icon(Icons.dark_mode),
+                  title: const Text('다크모드'),
                   onTap: () {
                     setState(
                           () {
@@ -280,17 +281,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading: Icon(Icons.logout),
-                  title: Text('로그 아웃'),
+                  leading: const Icon(Icons.logout),
+                  title: const Text('로그 아웃'),
                   onTap: () {
                     setState(() {
                       _selectedDrawerItem = 'Item 1';
                     });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const InfoPayScreen()),
-                    );
+                    InfoScreen().logout(context);
                   },
                 ),
               ),
@@ -315,12 +312,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Column(
                           children: [
                             Text(
                               '${snapshot.data!.name} 님 반가워요!',
-                              style: TextStyle(fontSize: 32),
+                              style: const TextStyle(fontSize: 32),
                             ),
                           ],
                         ),
@@ -330,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       padding: const EdgeInsets.only(left: 15),
                       alignment: Alignment.centerLeft,
-                      child: Text('AI 채팅 잔여횟수',
+                      child: const Text('AI 채팅 잔여횟수',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                     Container(
@@ -339,8 +336,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 80,
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.dark
-                            ? Color(0xFF3F3E3E)
-                            : Color(0xFFE0E0E0),
+                            ? const Color(0xFF3F3E3E)
+                            : const Color(0xFFEFF3F7),
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Column(
@@ -348,16 +345,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(width: 10),
-                              Icon(Icons.local_fire_department_rounded,
+                              const SizedBox(width: 10),
+                              const Icon(Icons.local_fire_department_rounded,
                                   size: 23),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               SizedBox(
                                 width: 200,
                                 height: 25,
                                 child: Text(
                                   '(${snapshot.data!.remainingChats} / 5)',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -381,37 +378,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     Container(
                       padding: const EdgeInsets.only(left: 15),
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: const Text(
                         '나의 레벨',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Color(0xFF2C2C2C)
-                            : Color(0xFFE0E0E0),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                '${snapshot.data!.level} 레벨',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Image(
-                                width: 30,
-                                height: 30,
-                                image: AssetImage(_getImageForLevel(snapshot.data!.level)),
-                              ),
-                            ],
-                          ),
-                        ],
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => IntroLevelScreen(name: snapshot.data!.name ?? '')),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? const Color(0xFF2C2C2C)
+                              : const Color(0xFFEFF3F7),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  '${snapshot.data!.level} 레벨',
+                                  style: const TextStyle(fontSize: 18),
+                                ),
+                                Image(
+                                  width: 30,
+                                  height: 30,
+                                  image: AssetImage(_getImageForLevel(snapshot.data!.level)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -449,21 +455,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Text(
                             '주간 성취도',
                             style: TextStyle(
-                              fontSize: 15,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 5),
+                    // const SizedBox(height: 5),
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(5),
                       margin: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         color: Theme.of(context).brightness == Brightness.dark
-                            ? Color(0xFF2C2C2C)
-                            : Color(0xFFE0E0E0),
+                            ? const Color(0xFF2C2C2C)
+                            : const Color(0xFFEFF3F7),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
