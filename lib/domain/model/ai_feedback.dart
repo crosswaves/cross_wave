@@ -12,9 +12,10 @@ class AiFeedback {
         content: [
           OpenAIChatCompletionChoiceMessageContentItemModel.text(
             '''
-            1. Check for any mistakes in the grammar of the conversation, and if so, guide the correct grammar.
-            2. If there is a good expression that is more commonly used, write an example of an answer using that expression.
-            3. You must explain it in Korean.
+            Identify AI messages and user messages separately. Do the following only if it is a user message.
+              - Check for any mistakes in the grammar of the conversation, and if so, guide the correct grammar.
+              - If there is a good expression that is more commonly used, write an example of an answer using that expression.
+              - The script must not contain any content other than feedback. Also, the content of the conversation should not be listed verbatim.
             ''',
           ),
         ],
