@@ -85,6 +85,9 @@ flutter:
     - assets/logo.png
     - assets/user.jpg
     - assets/bronze.png
+    - assets/gold.png
+    - assets/silver.png
+    - assets/iron.png
     - .env # path to your .env file
 
   # An image asset can refer to one or more resolution-specific "variants", see
