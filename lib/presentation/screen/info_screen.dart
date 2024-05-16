@@ -195,7 +195,7 @@ class InfoScreen extends StatelessWidget {
                   ),
                   IconButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const IntroNameScreen()));
-                  }, icon: const Icon(Icons.edit)),
+                  }, icon: const Icon(Icons.edit), iconSize: 15,),
                 ],
               ),
               Text(
