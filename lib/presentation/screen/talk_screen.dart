@@ -18,11 +18,18 @@ class TalkScreen extends StatefulWidget {
 
 class _TalkScreenState extends State<TalkScreen> {
   late Offset _floatingButtonPosition;
+  GlobalKey _draggableKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    _floatingButtonPosition = Offset.zero;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final screenSize = MediaQuery.of(context).size;
+      setState(() {
+        _floatingButtonPosition = Offset(screenSize.width - 80,
+            screenSize.height - 160); // Adjust the offset as needed
+      });
+    });
   }
 
   @override
@@ -56,26 +63,35 @@ class _TalkScreenState extends State<TalkScreen> {
           );
         },
       ),
-      floatingActionButton: Draggable(
-        feedback: FloatingActionButton(
-          onPressed: () {},
-          child: const Icon(Icons.phone, color: Colors.red), // 전화 아이콘
-        ),
-        onDraggableCanceled: (_, __) {
-          setState(() {
-            _floatingButtonPosition = __;
-          });
-        },
-        onDragEnd: (details) {
-          setState(() {
-            _floatingButtonPosition = details.offset;
-          });
-        },
-        childWhenDragging: Container(),
-        child: FloatingActionButton(
-          onPressed: () => _confirmExitCall(context),
-          child: const Icon(Icons.phone, color: Colors.red), // 전화 아이콘
-        ), // 드래그 중에는 빈 컨테이너로 표시
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            left: _floatingButtonPosition.dx,
+            top: _floatingButtonPosition.dy,
+            child: Draggable(
+              key: _draggableKey,
+              feedback: FloatingActionButton(
+                onPressed: () {},
+                child: const Icon(Icons.phone, color: Colors.red), // 전화 아이콘
+              ),
+              onDraggableCanceled: (_, __) {
+                setState(() {
+                  _floatingButtonPosition = __;
+                });
+              },
+              onDragEnd: (details) {
+                setState(() {
+                  _floatingButtonPosition = details.offset;
+                });
+              },
+              childWhenDragging: Container(),
+              child: FloatingActionButton(
+                onPressed: () => _confirmExitCall(context),
+                child: const Icon(Icons.phone, color: Colors.red), // 전화 아이콘
+              ), // 드래그 중에는 빈 컨테이너로 표시
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
