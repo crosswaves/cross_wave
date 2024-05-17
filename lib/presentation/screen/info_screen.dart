@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,6 +10,8 @@ import '../../utils/firebase_store.dart';
 import 'login_screen.dart';
 import 'package:intl/intl.dart';
 
+import 'privacy_policy_screen.dart';
+
 class InfoScreen extends StatelessWidget {
   final FirebaseAuthService _authService = FirebaseAuthService();
   final FirebaseStoreService _firebaseStore = FirebaseStoreService();
@@ -21,8 +21,7 @@ class InfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -40,12 +39,18 @@ class InfoScreen extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const InfoPhotoScreen()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const InfoPhotoScreen()));
                           },
                           child: FutureBuilder<Profile>(
                             future: _firebaseStore.readProfile(),
-                            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Profile> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
                                 // 데이터를 아직 가져오지 못한 경우 로딩 표시
                                 return const CircleAvatar(
                                   radius: 75,
@@ -61,29 +66,27 @@ class InfoScreen extends StatelessWidget {
                                 // 데이터를 가져와서 사용자 정보 표시
                                 var userData = snapshot.data!;
                                 var photoUrl = userData.profilePicture ?? '';
-                                return Stack(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 75,
-                                      backgroundImage: NetworkImage(photoUrl),
-                                    ),
-                                    Positioned(
-                                      bottom: 60,
-                                      right: 60,
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                          // color: Colors.transparent,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: const Icon(
-                                          Icons.camera_alt,
-                                          // color: Colors.grey,
-                                          size: 30,
-                                        ),
+                                return Stack(children: [
+                                  CircleAvatar(
+                                    radius: 75,
+                                    backgroundImage: NetworkImage(photoUrl),
+                                  ),
+                                  Positioned(
+                                    bottom: 60,
+                                    right: 60,
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        // color: Colors.transparent,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: const Icon(
+                                        Icons.camera_alt,
+                                        // color: Colors.grey,
+                                        size: 30,
                                       ),
                                     ),
-                                  ]
-                                );
+                                  ),
+                                ]);
                               } else {
                                 // 데이터가 없는 경우 빈 프로필 사진 표시
                                 return const CircleAvatar(
@@ -104,23 +107,37 @@ class InfoScreen extends StatelessWidget {
                       height: 20,
                     ),
                     ListView.separated(
-                      shrinkWrap: true, // ListView의 높이를 감싸는 콘텐츠에 맞춥니다.
-                      itemCount: 4, // 항목 개수
-                      separatorBuilder: (context, index) => const Divider(), // 구분선 추가
+                      shrinkWrap: true,
+                      // ListView의 높이를 감싸는 콘텐츠에 맞춥니다.
+                      itemCount: 4,
+                      // 항목 개수
+                      separatorBuilder: (context, index) => const Divider(),
+                      // 구분선 추가
                       itemBuilder: (context, index) {
-                        final title = ['요금제 업그레이드', '개인정보처리 약관', '홈페이지 둘러보기', '로그아웃'][index];
+                        final title = [
+                          '요금제 업그레이드',
+                          '개인정보 처리방침',
+                          '홈페이지 둘러보기',
+                          '로그아웃'
+                        ][index];
                         return InkWell(
                           onTap: () {
                             if (index == 3) {
                               logout(context); // 로그아웃 함수 호출
-                            } else {
-                              // 요금제 업그레이드, 개인정보처리 약관 등 클릭 시 처리
-                              // ... 각 항목에 해당하는 처리 코드 작성
+                            } else if (index == 1) {
+                              // 개인정보처리 약관 클릭 시 PrivacyPolicyScreen으로 이동
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const PrivacyPolicyScreen()),
+                              );
                             }
                           },
                           child: Container(
                             decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                             ),
                             padding: const EdgeInsets.all(16.0), // 여백 추가
                             child: Row(
@@ -157,13 +174,18 @@ class InfoScreen extends StatelessWidget {
           return const Text('Error'); // 에러가 발생하면 에러 메시지 표시
         } else {
           final userData = snapshot.data;
-          final name = userData?.name ?? 'Unknown'; // displayName이 없으면 'Unknown'으로 처리
-          final DateTime creationTime = userData?.joinDate ?? DateTime.parse('2999-12-31'); // creationTime이 없으면 'Unknown'으로 처리
-          final DateTime lastLoginTime = userData?.lastSignInTime ?? DateTime.parse('2999-12-31'); // creationTime이 없으면 'Unknown'으로 처리
+          final name =
+              userData?.name ?? 'Unknown'; // displayName이 없으면 'Unknown'으로 처리
+          final DateTime creationTime = userData?.joinDate ??
+              DateTime.parse('2999-12-31'); // creationTime이 없으면 'Unknown'으로 처리
+          final DateTime lastLoginTime = userData?.lastSignInTime ??
+              DateTime.parse('2999-12-31'); // creationTime이 없으면 'Unknown'으로 처리
 
           // DateTime을 원하는 형식의 문자열로 변환
-          final formattedCreationTime = DateFormat('yyyy-MM-dd').format(creationTime);
-          final formattedLastLogin = DateFormat('yyyy-MM-dd HH:mm:ss').format(lastLoginTime);
+          final formattedCreationTime =
+              DateFormat('yyyy-MM-dd').format(creationTime);
+          final formattedLastLogin =
+              DateFormat('yyyy-MM-dd HH:mm:ss').format(lastLoginTime);
 
           // final timestamp = (creationTime as Timestamp).toDate();
           // final Timestamp timestamp = creationTime as Timestamp;  // Timestamp로 캐스팅
@@ -180,9 +202,16 @@ class InfoScreen extends StatelessWidget {
                     '이름 : $name',
                     style: const TextStyle(fontSize: 22),
                   ),
-                  IconButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const IntroNameScreen()));
-                  }, icon: const Icon(Icons.edit), iconSize: 15,),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const IntroNameScreen()));
+                    },
+                    icon: const Icon(Icons.edit),
+                    iconSize: 15,
+                  ),
                 ],
               ),
               Text(
@@ -209,8 +238,10 @@ class InfoScreen extends StatelessWidget {
   // }
 
   void logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance(); // 1. SharedPreferences 인스턴스 가져오기
-    await prefs.setBool('isFirstLogin', true); // 2. 'isFirstLogin' 값을 true로 설정하여 첫 번째 로그인 상태로 변경
+    final prefs =
+        await SharedPreferences.getInstance(); // 1. SharedPreferences 인스턴스 가져오기
+    await prefs.setBool('isFirstLogin',
+        true); // 2. 'isFirstLogin' 값을 true로 설정하여 첫 번째 로그인 상태로 변경
     await _authService.signOut(); // 3. Firebase 로그아웃
 
     // 3. 로그아웃 메시지 표시
