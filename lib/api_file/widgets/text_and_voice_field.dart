@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_speak_talk/utils/firebase_service.dart';
+import 'package:flutter_speak_talk/utils/firebase_store.dart';
+import '../../domain/model/profile.dart';
 import '../models/chat_model.dart';
 import '../providers/chats_provider.dart';
 import '../services/ai_handler.dart';
@@ -27,11 +31,15 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
   var _isReplying = false;
   var _isListening = false;
 
+  // 파이어베이스
+  final FirebaseAuthService _firebaseAuth = FirebaseAuthService();
+  final FirebaseStoreService _firebaseStore = FirebaseStoreService();
+
   @override
   void initState() {
     super.initState();
     _voiceHandler.initSpeech();
-    sendInitialMessage();
+    // sendInitialMessage();
   }
 
   @override
@@ -40,44 +48,100 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
     super.dispose();
   }
 
+  // 기존코드
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Row(
+  //     children: [
+  //       Expanded(
+  //         child: TextField(
+  //           controller: _messageController,
+  //           onChanged: (value) {
+  //             value.isNotEmpty
+  //                 ? setInputMode(InputMode.text)
+  //                 : setInputMode(InputMode.voice);
+  //           },
+  //           cursorColor: Theme.of(context).colorScheme.onPrimary,
+  //           decoration: InputDecoration(
+  //             border: OutlineInputBorder(
+  //               borderRadius: BorderRadius.circular(12),
+  //             ),
+  //             focusedBorder: OutlineInputBorder(
+  //               borderSide:
+  //                   BorderSide(color: Theme.of(context).colorScheme.onPrimary),
+  //               borderRadius: BorderRadius.circular(12),
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //       const SizedBox(width: 6),
+  //       ToggleButton(
+  //         isListening: _isListening,
+  //         isReplying: _isReplying,
+  //         inputMode: _inputMode,
+  //         sendTextMessage: () {
+  //           final message = _messageController.text;
+  //           _messageController.clear();
+  //           sendTextMessage(message);
+  //         },
+  //         sendVoiceMessage: sendVoiceMessage,
+  //       )
+  //     ],
+  //   );
+  // }
+
+  // 새로운 코드
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: _messageController,
-            onChanged: (value) {
-              value.isNotEmpty
-                  ? setInputMode(InputMode.text)
-                  : setInputMode(InputMode.voice);
-            },
-            cursorColor: Theme.of(context).colorScheme.onPrimary,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
+    return FutureBuilder<Profile>(
+      future: _firebaseStore.readProfile(),
+      builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData && snapshot.data != null) {
+          return Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _messageController,
+                  onChanged: (value) {
+                    value.isNotEmpty
+                        ? setInputMode(InputMode.text)
+                        : setInputMode(InputMode.voice);
+                  },
+                  cursorColor: Theme.of(context).colorScheme.onPrimary,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onPrimary),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.onPrimary),
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 6),
-        ToggleButton(
-          isListening: _isListening,
-          isReplying: _isReplying,
-          inputMode: _inputMode,
-          sendTextMessage: () {
-            final message = _messageController.text;
-            _messageController.clear();
-            sendTextMessage(message);
-          },
-          sendVoiceMessage: sendVoiceMessage,
-        )
-      ],
+              const SizedBox(width: 6),
+              ToggleButton(
+                isListening: _isListening,
+                isReplying: _isReplying,
+                inputMode: _inputMode,
+                sendTextMessage: () {
+                  final message = _messageController.text;
+                  _messageController.clear();
+                  sendTextMessage(message);
+                },
+                sendVoiceMessage: sendVoiceMessage,
+              )
+            ],
+          );
+        } else {
+          return Text('데이터를 찾을 수 없습니다.');
+        }
+      },
     );
   }
 
@@ -134,11 +198,55 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
     ));
   }
 
-  Future<void> sendInitialMessage() async {
+  // Widget _buildInitialMessage(Profile profile) {
+  //   // 초기 메시지를 사용자 정의 텍스트로 설정
+  //   String initialMessage = "Welcome! How can I assist you today?";
+  //   final theme = profile.theme;
+  //   if (theme != null) {
+  //     initialMessage = "Welcome, would you like to talk about $theme today?.";
+  //   }
+  //   _handleAiResponse(initialMessage);
+  //   return SizedBox(); // 빈 위젯 반환 또는 필요한 경우 초기 메시지를 표시하는 위젯 반환
+  // }
+  //
+  // void _handleAiResponse(String initialMessage) async {
+  //   final aiResponse = await _aiHandler.getResponse(initialMessage);
+  //   addToChatList(aiResponse, false, DateTime.now().toString());
+  //   _voiceHandler.speak(aiResponse);
+  // }
+
+  Future<void> sendInitialMessage(Profile profile) async {
     // 초기 메시지를 사용자 정의 텍스트로 설정
-    const String initialMessage = "Welcome! How can I assist you today?";
+    String initialMessage = "Welcome! How can I assist you today?";
+    final theme = profile.theme;
+    if (theme != null) {
+      initialMessage = "Welcome, would you like to talk about $theme today?.";
+    }
+
     final aiResponse = await _aiHandler.getResponse(initialMessage);
     addToChatList(aiResponse, false, DateTime.now().toString());
     _voiceHandler.speak(aiResponse);
   }
+
+// Future<void> sendInitialMessage() async {
+//
+//   // 초기 메시지를 사용자 정의 텍스트로 설정
+//   String initialMessage = "Welcome! How can I assist you today?";
+//   if (theme.isNotEmpty) {
+//     initialMessage = "Welcome, would you like to talk about $theme today?.";
+//   }
+//
+//   final aiResponse = await _aiHandler.getResponse(initialMessage);
+//   addToChatList(aiResponse, false, DateTime.now().toString());
+//   _voiceHandler.speak(aiResponse);
+// }
+
+// 기존코드
+// Future<void> sendInitialMessage() async {
+//   // 초기 메시지를 사용자 정의 텍스트로 설정
+//   const String initialMessage = "Welcome! How can I assist you today?";
+//   final aiResponse = await _aiHandler.getResponse(initialMessage);
+//   addToChatList(aiResponse, false, DateTime.now().toString());
+//   _voiceHandler.speak(aiResponse);
+// }
 }

@@ -50,19 +50,46 @@ class _LoginState extends State<Login> {
                 onPressed: () async {
                   final prefs = await SharedPreferences.getInstance();
                   final isFirstLogin = prefs.getBool('isFirstLogin') ?? true;
+                  final FirebaseAuthService authService = FirebaseAuthService();
 
-                  // 구글 로그인 메서드
-                  // if (isFirstLogin) {
-                  User? user = await _authService.signInWithGoogle();
+                  User? user = await authService.signInWithGoogle();
                   if (user != null) {
                     print('로그인 성공: ${user.displayName}님 환영합니다!;');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const IntroNameScreen(),
-                      ),
-                    );
+                    if (isFirstLogin) {
+                      // 첫 로그인 시 IntroNameScreen으로 이동
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const IntroNameScreen(),
+                        ),
+                      );
+                      await prefs.setBool('isFirstLogin', false);
+                    } else {
+                      // 두 번째 로그인 시 바로 HomeScreen으로 이동
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                      );
+                    }
                   }
+
+                  // final prefs = await SharedPreferences.getInstance();
+                  // final isFirstLogin = prefs.getBool('isFirstLogin') ?? true;
+                  //
+                  // // 구글 로그인 메서드
+                  // // if (isFirstLogin) {
+                  // User? user = await _authService.signInWithGoogle();
+                  // if (user != null) {
+                  //   print('로그인 성공: ${user.displayName}님 환영합니다!;');
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => const IntroNameScreen(),
+                  //     ),
+                  //   );
+                  // }
 
                   // 첫 로그인 시 NameSetScreen으로 이동
                   //   Navigator.push(

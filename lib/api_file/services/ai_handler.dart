@@ -41,7 +41,7 @@ class AIHandler {
 
       // the actual request.
       OpenAIChatCompletionModel chatCompletion =
-      await OpenAI.instance.chat.create(
+          await OpenAI.instance.chat.create(
         model: "gpt-3.5-turbo-1106",
         // responseFormat: {"type": "json_object"},
         seed: 6,
