@@ -57,6 +57,7 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
     _messageController.dispose();
     super.dispose();
   }
+
   // 새로운 코드
   @override
   Widget build(BuildContext context) {
@@ -165,7 +166,12 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
     String initialMessage = "Welcome! How can I assist you today?";
     final theme = profile.theme;
     if (theme != null) {
-      initialMessage = "Welcome, would you like to talk about $theme today?.";
+      initialMessage =
+          '''
+          Today, we're going to talk about $theme. 
+          Now, you'll become an English teacher and start the conversation.
+          please start conversation with 'Hello, how are you?'
+          ''';
     }
     _handleAiResponse(initialMessage);
   }
