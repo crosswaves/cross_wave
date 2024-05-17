@@ -26,7 +26,8 @@ class _TalkScreenState extends State<TalkScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final screenSize = MediaQuery.of(context).size;
       setState(() {
-        _floatingButtonPosition = Offset(screenSize.width - 80, screenSize.height - 160); // Adjust the offset as needed
+        _floatingButtonPosition = Offset(screenSize.width - 80,
+            screenSize.height - 160); // Adjust the offset as needed
       });
     });
   }
@@ -38,7 +39,7 @@ class _TalkScreenState extends State<TalkScreen> {
       body: Consumer(
         builder: (context, ref, child) {
           final List<ChatModel> chats =
-          ref.watch(chatsProvider).reversed.toList();
+              ref.watch(chatsProvider).reversed.toList();
           return Column(
             children: [
               Expanded(
@@ -121,7 +122,7 @@ class _TalkScreenState extends State<TalkScreen> {
 
     if (confirmExit == true) {
       final List<ChatModel> chats =
-      ProviderScope.containerOf(context).read(chatsProvider);
+          ProviderScope.containerOf(context).read(chatsProvider);
       String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
       if (chats.isNotEmpty) {
