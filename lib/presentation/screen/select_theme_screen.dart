@@ -142,7 +142,7 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
                     ),
                   ),
                   Text(
-                    '3가지 이상', style: TextStyle(
+                    '1가지 이상', style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     color: Theme.of(context).brightness == Brightness.dark
@@ -158,11 +158,11 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
                     )
                   ),
                   const Text(
-                    '내게 꼭 맞는 코스를 추천해드릴게요!',style: TextStyle(
+                    '내가 원하는 주제로 대화할 수 있어요!',style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                    )
-                  )
+                    ),
+                  ),
                   // RichText(
                   //   textAlign: TextAlign.center,
                   //   text: const TextSpan(
