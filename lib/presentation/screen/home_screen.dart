@@ -316,8 +316,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(width: 10),
                         Row(
                           children: [
+                            SizedBox(width: 20),
                             Lottie.asset('assets/lottie/lottie_welcome.json', width: 100, height: 100),
-                            SizedBox(width: 40),
+                            SizedBox(width: 30),
                             Column(
                               children: [
                                 Text(
