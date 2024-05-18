@@ -36,7 +36,9 @@ class ChatItem extends StatelessWidget {
             decoration: BoxDecoration(
               color: isMe
                   ? Theme.of(context).colorScheme.secondary
-                  : Colors.grey.shade800,
+                  : Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF8D8D92)
+                      : const Color(0xFF4F5056),
               borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(15),
                 topRight: const Radius.circular(15),
@@ -104,7 +106,7 @@ class ProfileContainer extends StatelessWidget {
                   //     image: AssetImage('assets/computer.png'),
                   //     fit: BoxFit.cover,
                   //   ),
-              : null,
+                  : null,
             ),
             child: isMe
                 ? CircleAvatar(
