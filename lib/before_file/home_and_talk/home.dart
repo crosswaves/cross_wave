@@ -1,7 +1,7 @@
-import 'package:cross_wave/home_and_talk/more_info.dart';
-import 'package:cross_wave/home_and_talk/talk.dart';
 import 'package:flutter/material.dart';
+import 'more_info.dart';
 import 'profile_screen.dart';
+import 'talk.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
