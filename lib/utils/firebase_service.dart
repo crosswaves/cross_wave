@@ -42,60 +42,55 @@ class FirebaseAuthService {
   // 구글 이메일 로그인
   Future<User?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null; // 사용자가 로그인을 취소한 경우
 
-      // google 인증 세부 정보 가져오기
       final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
-
-      // Firebase에 로그인하기 위한 자격 증명 생성
+          await googleUser.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      // Firebase에 사용자 로그인
       final UserCredential userCredential =
-      await _auth.signInWithCredential(credential);
+          await _auth.signInWithCredential(credential);
+      final User? user = userCredential.user;
 
-      if (userCredential != null) {
-        // 사용자 정보가 null이 아닌 경우에만 Firestore에 사용자 정보 저장
-        await _firebaseStoreService.addProfile(Profile(
-          id: userCredential.user!.uid,
-          name: userCredential.user!.displayName,
-          email: userCredential.user!.email,
-          lastSignInTime: userCredential.user!.metadata.lastSignInTime,
-          joinDate: userCredential.user!.metadata.creationTime,
-          profilePicture: userCredential.user!.photoURL,
-          membershipLevel: 'Standard',
-          level: 'Iron',
-          weeklyProgress: 0,
-          dailyProgress: 0,
-          remainingChats: 5,
-          theme: ['life'],
-        ));
-        return userCredential.user; // 로그인된 사용자 정보 반환
+      if (user != null) {
+        // Firestore에서 사용자 정보 가져오기
+        DocumentSnapshot userData = await FirebaseFirestore.instance
+            .collection('profiles')
+            .doc(user.uid)
+            .get();
+        if (userData.exists) {
+          // 기존 사용자 정보 사용
+          print("기존 사용자 정보 사용");
+        } else {
+          // 새 사용자일 경우, 구글 정보를 사용하여 프로필 생성
+          await _firebaseStoreService.addProfile(Profile(
+            id: user.uid,
+            name: user.displayName ??
+                "Unnamed User", // 구글 계정 이름 사용, 없을 경우 "Unnamed User"
+            email: user.email,
+            lastSignInTime: user.metadata.lastSignInTime,
+            joinDate: user.metadata.creationTime,
+            profilePicture: user.photoURL,
+            membershipLevel: 'Standard',
+            level: 'Iron',
+            weeklyProgress: 0,
+            dailyProgress: 0,
+            remainingChats: 5,
+            theme: ['life'],
+          ));
+        }
+        return user; // 로그인된 사용자 정보 반환
       } else {
         return null; // 사용자 정보가 null인 경우 null 반환
       }
-    } on Exception catch (e) {
+    } catch (e) {
       print('Exception during Google Sign-In: $e');
       return null;
     }
-    // 사용자 정보가 null이 아닌 경우에만 Firestore에 사용자 정보 저장
-    // await addUserData(userCredential.user!);
-    // return userCredential.user; // 로그인된 사용자 정보 반환
-    //     } else {
-    //       return null; // 사용자 정보가 null인 경우 null 반환
-    //     }
-    //   } on Exception catch (e)
-    //   {
-    //     print('exception->$e');
-    //     return null;
-    //   }
-    // }
   }
 
   Future<void> signOut() async {

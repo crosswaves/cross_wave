@@ -86,7 +86,6 @@ class FirebaseStoreService {
     return []; // Return an empty list if the field is missing or is not a list
   }
 
-
 // 프로필 업데이트
   Future<void> updateProfile(Profile profile) async {
     User? user = _auth.currentUser;
@@ -101,7 +100,8 @@ class FirebaseStoreService {
   }
 
   // 특정 필드만 업데이트하는 메서드
-  Future<void> updateProfileField(String userId, Map<String, dynamic> updates) async {
+  Future<void> updateProfileField(
+      String userId, Map<String, dynamic> updates) async {
     try {
       await _firestore.collection('profiles').doc(userId).update(updates);
     } on FirebaseException catch (e) {
@@ -112,6 +112,27 @@ class FirebaseStoreService {
       // 다른 모든 예외 처리
       print('General error updating profile field: $e');
       throw Exception('Error updating profile field: $e');
+    }
+  }
+
+  Future<void> updateProfileName(String userId, String newName) async {
+    DocumentReference profileRef =
+        _firestore.collection('profiles').doc(userId);
+
+    // 현재 프로필을 읽어와서 이름이 설정되어 있는지 확인
+    DocumentSnapshot snapshot = await profileRef.get();
+    var data = snapshot.data()
+        as Map<String, dynamic>?; // 데이터를 Map<String, dynamic>으로 캐스팅
+
+    if (data != null &&
+        data.containsKey('name') &&
+        data['name'] != null &&
+        data['name'].isNotEmpty) {
+      // 이름이 이미 설정되어 있으면 업데이트 하지 않음
+      print('Name already set. No update performed.');
+    } else {
+      // 이름이 설정되어 있지 않으면 새 이름으로 업데이트
+      profileRef.update({'name': newName});
     }
   }
 
