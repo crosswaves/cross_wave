@@ -150,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
         buttonBackgroundColor: Colors.indigo,
         items: const <Widget>[
           Icon(Icons.home, size: 30, color: Colors.white),
-          Icon(Icons.account_box, size: 30, color: Colors.white),
+          Icon(Icons.volume_up, size: 30, color: Colors.white),
           Icon(Icons.more_horiz, size: 30, color: Colors.white),
         ],
         onTap: _onItemTapped,
