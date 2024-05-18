@@ -8,6 +8,7 @@ import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/intro_level_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
+import 'package:lottie/lottie.dart';
 import '../../data/repository/weekely_message_counter_impl.dart';
 import '../../domain/model/profile.dart';
 import '../../domain/repository/weekely_message_counter.dart';
@@ -310,14 +311,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     const SizedBox(height: 25),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const SizedBox(width: 20),
-                        Column(
+                        const SizedBox(width: 10),
+                        Row(
                           children: [
-                            Text(
-                              '${snapshot.data!.name} 님 반가워요!',
-                              style: const TextStyle(fontSize: 32),
+                            Lottie.asset('assets/lottie/lottie_welcome.json', width: 100, height: 100),
+                            SizedBox(width: 40),
+                            Column(
+                              children: [
+                                Text(
+                                  '${snapshot.data!.name} 님',
+                                  style: const TextStyle(fontSize: 32),
+                                ),
+                                Text('반가워요!',style: const TextStyle(fontSize: 32))
+                              ],
                             ),
                           ],
                         ),
