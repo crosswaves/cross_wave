@@ -48,7 +48,15 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
       if (_selectedThemes.contains(theme)) {
         _selectedThemes.remove(theme);
       } else {
+        if (_selectedThemes.length < 3) {
         _selectedThemes.add(theme);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('3개까지 선택이 가능합니다.'),
+            ),
+          );
+        }
       }
     });
   }
