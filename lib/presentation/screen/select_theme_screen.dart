@@ -142,7 +142,7 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
                     ),
                   ),
                   Text(
-                    '3가지 이상', style: TextStyle(
+                    '1가지 이상', style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     color: Theme.of(context).brightness == Brightness.dark
@@ -158,35 +158,11 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
                     )
                   ),
                   const Text(
-                    '내게 꼭 맞는 코스를 추천해드릴게요!',style: TextStyle(
+                    '내가 원하는 주제로 대화할 수 있어요!',style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                    )
-                  )
-                  // RichText(
-                  //   textAlign: TextAlign.center,
-                  //   text: const TextSpan(
-                  //     style: TextStyle(
-                  //       // 기본 텍스트 스타일
-                  //       fontSize: 16,
-                  //     ),
-                  //     children: <TextSpan>[
-                  //       TextSpan(text: '관심있는 주제를 \n'),
-                  //       TextSpan(
-                  //         text: '3가지', // 특별히 강조할 텍스트
-                  //         style: TextStyle(
-                  //             // color: Colors.yellow,
-                  //             color: Theme.of(context).brightness ==
-                  //                     Brightness.dark
-                  //                 ? Colors.yellow
-                  //                 : Colors.black,
-                  //             // 다크 모드일 때와 라이트 모드일 때에 따라 적절한 색상을 선택
-                  //             fontWeight: FontWeight.bold),
-                  //       ),
-                  //       TextSpan(text: ' 이상 선택해 주세요. \n내게 꼭 맞는 코스를 추천해드릴게요!'),
-                  //     ],
-                  //   ),
-                  // ),
+                    ),
+                  ),
                 ],
               ),
             ),

@@ -28,8 +28,8 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     GoRouter router = GoRouter(
-      initialLocation: '/login',
-      // initialLocation: '/',
+      // initialLocation: '/login',
+      initialLocation: '/',
       routes: [
         GoRoute(
           path: '/login',
@@ -73,8 +73,8 @@ class App extends ConsumerWidget {
         if (state.matchedLocation == '/login' && isLoggedIn) {
           return isFirstLoginCompleted ? '/' : '/name_set';
         } else if (!isLoggedIn) {
-          return '/login';
-          // return '/';
+          // return '/login';
+          return '/';
         }
 
         return null;

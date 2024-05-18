@@ -61,6 +61,24 @@ class FirebaseStoreService {
     );
   }
 
+  // Firebase에서 theme 정보 불러오는 메서드
+  Future<String> readTheme() async {
+    User? user = _auth.currentUser;
+    if (user == null) {
+      throw Exception('No user currently found');
+    }
+
+    var doc = await _firestore.collection('profiles').doc(user.uid).get();
+
+    if (!doc.exists) {
+      throw Exception('Profile for the current user does not exist!');
+    }
+
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    String theme = data['theme'] as String;
+    return theme;
+  }
+
   List<String> _parseThemeList(dynamic themeField) {
     if (themeField is List) {
       return List<String>.from(themeField.map((item) => item.toString()));
