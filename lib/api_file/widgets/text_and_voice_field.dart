@@ -1,13 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_speak_talk/utils/firebase_service.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
 import '../../domain/model/profile.dart';
 import '../models/chat_model.dart';
 import '../providers/chats_provider.dart';
 import '../services/ai_handler.dart';
-import '../services/voice_handler.dart'; // 수정된 VoiceHandler 사용
+import '../services/voice_handler.dart';
 import 'toggle_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -32,7 +31,6 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
   var _isListening = false;
 
   // 파이어베이스
-  final FirebaseAuthService _firebaseAuth = FirebaseAuthService();
   final FirebaseStoreService _firebaseStore = FirebaseStoreService();
 
   // Futurebuilder 캐싱
@@ -120,24 +118,45 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
       print('Voice not supported');
       return;
     }
-    if (_voiceHandler.speechToText.isListening) {
-      await _voiceHandler.stopListening();
-      setListeningState(false);
+    final remainingChats = await getRemainingChats();
+
+    if (remainingChats > 0) {
+      if (_voiceHandler.speechToText.isListening) {
+        await _voiceHandler.stopListening();
+        setListeningState(false);
+      } else {
+        setListeningState(true);
+        final result = await _voiceHandler.startListening();
+        setListeningState(false);
+        sendTextMessage(result);
+      }
     } else {
-      setListeningState(true);
-      final result = await _voiceHandler.startListening();
-      setListeningState(false);
-      sendTextMessage(result);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('더 이상 대화를 진행할 수 없습니다. 잔여 대화횟수가 부족합니다.'),
+        ),
+      );
     }
   }
 
   void sendTextMessage(String message) async {
-    setReplyingState(true);
-    addToChatList(message, true, DateTime.now().toString());
-    final aiResponse = await _aiHandler.getResponse(message);
-    addToChatList(aiResponse, false, DateTime.now().toString());
-    _voiceHandler.speak(aiResponse); // AI 응답을 TTS로 읽기
-    setReplyingState(false);
+    final remainingChats = await getRemainingChats();
+
+    if (remainingChats > 0) {
+      setReplyingState(true);
+      addToChatList(message, true, DateTime.now().toString());
+      await updateRemainingChats(); // remainingChats 값 업데이트
+      final aiResponse = await _aiHandler.getResponse(message);
+      addToChatList(aiResponse, false, DateTime.now().toString());
+      _voiceHandler.speak(aiResponse); // AI 응답을 TTS로 읽기
+      setReplyingState(false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('더 이상 대화를 진행할 수 없습니다. 잔여 대화횟수가 부족합니다.'),
+        ),
+      );
+    }
   }
 
   void setReplyingState(bool isReplying) {
@@ -154,6 +173,7 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
 
   void addToChatList(String message, bool isMe, String id) {
     final chats = ref.read(chatsProvider.notifier);
+
     chats.add(ChatModel(
       id: id,
       message: message,
@@ -166,8 +186,7 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
     String initialMessage = "Welcome! How can I assist you today?";
     final theme = profile.theme;
     if (theme != null) {
-      initialMessage =
-          '''
+      initialMessage = '''
           Today, we're going to talk about $theme. 
           Now, you'll become an English teacher and start the conversation.
           please start conversation with 'Hello, how are you?'
@@ -180,5 +199,57 @@ class _TextAndVoiceFieldState extends ConsumerState<TextAndVoiceField> {
     final aiResponse = await _aiHandler.getResponse(initialMessage);
     addToChatList(aiResponse, false, DateTime.now().toString());
     _voiceHandler.speak(aiResponse);
+  }
+
+  Future<int> getRemainingChats() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final uid = user.uid;
+        final DocumentSnapshot<Map<String, dynamic>> userProfile =
+            await FirebaseFirestore.instance
+                .collection('profiles')
+                .doc(uid)
+                .get();
+        if (userProfile.exists) {
+          int remainingChats = userProfile.data()?['remainingChats'] ?? 0;
+          return remainingChats;
+        } else {
+          return 0;
+        }
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      print('Error getting remainingChats: $e');
+      return 0;
+    }
+  }
+
+  Future<void> updateRemainingChats() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final uid = user.uid;
+        final DocumentSnapshot<Map<String, dynamic>> profileSnapshot =
+            await FirebaseFirestore.instance
+                .collection('profiles')
+                .doc(uid)
+                .get();
+
+        if (profileSnapshot.exists) {
+          final int remainingChats =
+              profileSnapshot.data()?['remainingChats'] ?? 0;
+          if (remainingChats > 0) {
+            // remainingChats 필드를 1씩 감소시킴
+            await profileSnapshot.reference.update({
+              'remainingChats': remainingChats - 1,
+            });
+          }
+        }
+      }
+    } catch (e) {
+      print('Error updating remainingChats: $e');
+    }
   }
 }
