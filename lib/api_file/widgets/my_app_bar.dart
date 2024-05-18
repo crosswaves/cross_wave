@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../domain/model/ai_translate.dart';
 import '../providers/active_theme_provider.dart';
 import 'theme_switch.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,9 +58,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: const Text("취소"),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop(); // 팝업 닫기
-                _showOutputDialog(context, userInput); // 결과 출력
+                await _translateAndShowOutputDialog(context, userInput); // 번역 및 결과 출력
               },
               child: const Text("확인"),
             ),
@@ -69,22 +70,22 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  void _showOutputDialog(BuildContext context, String userInput) {
-    // 여기서 영작된 문장으로 변환하는 로직을 추가할 수 있습니다.
-    // 현재는 입력된 문장을 그대로 출력합니다.
-    String translatedText = "입력된 문장: $userInput"; // 예제 결과 텍스트
+  Future<void> _translateAndShowOutputDialog(BuildContext context, String userInput) async {
+    AiTranslate aiTranslate = AiTranslate();
+    String translatedText = await aiTranslate.getResponse(userInput);
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
+    debugPrint('Translated Text: $translatedText'); // 디버깅 메시지 추가
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AlertDialog(
           title: const Text("결과"),
           content: Text(translatedText),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: translatedText));
-                ScaffoldMessenger.of(context).showSnackBar(
+                ScaffoldMessenger.maybeOf(Scaffold.of(context) as BuildContext)?.showSnackBar(
                   const SnackBar(content: Text("텍스트가 클립보드에 복사되었습니다.")),
                 );
               },
@@ -97,8 +98,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               child: const Text("닫기"),
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 
