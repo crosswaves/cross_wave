@@ -29,6 +29,11 @@ class _AchieveBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 최대값 계산
+    double maxCount = messageCounts.reduce((value, element) => value > element ? value : element).toDouble();
+    // maxY 설정
+    double maxY = (maxCount / 10).ceilToDouble() * 10;
+
     return BarChart(
       BarChartData(
         barTouchData: barTouchData,
@@ -38,7 +43,7 @@ class _AchieveBarChart extends StatelessWidget {
         barGroups: barGroups,
         gridData: const FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 20,
+        maxY: maxY, // 최대값 설정
       ),
     );
   }
@@ -140,28 +145,27 @@ class _AchieveBarChart extends StatelessWidget {
   );
 
   List<BarChartGroupData> get barGroups {
-    // Get today's date
     DateTime now = DateTime.now();
     DateTime thisMonday = now.subtract(Duration(days: now.weekday - 1));
     List<BarChartGroupData> barDataList = [];
 
-    // Iterate over 7 days (a week)
     for (int i = 0; i < 7; i++) {
       DateTime currentDate = thisMonday.add(Duration(days: i));
       int dayOfWeek = (currentDate.weekday % 7);
       int messageCountsIndex = dayOfWeek;
       int count = messageCountsIndex >= 0 ? messageCounts[messageCountsIndex] : 0;
       barDataList.add(BarChartGroupData(
-        x: i, // Use i directly as x value
+        x: i,
         barRods: [
           BarChartRodData(
-            toY: count.toDouble(), // Set y value directly
+            toY: count.toDouble(),
             gradient: _barsGradient,
           ),
         ],
         showingTooltipIndicators: [0],
       ));
     }
+
     return barDataList;
   }
 }
