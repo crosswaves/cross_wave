@@ -28,6 +28,19 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
     '음식',
     '운동',
   ];
+
+  final Map<String, String> themeTranslation = {
+    '커리어': 'Career',
+    '여행': 'Travel',
+    '영화/음악': 'Movie/Music',
+    '가족': 'Family',
+    '문화': 'Culture',
+    '연애': 'Love',
+    '쇼핑': 'Shopping',
+    '음식': 'Food',
+    '운동': 'Exercise',
+  };
+
   Color? backgroundColor = const Color(0xFFA3C4D6); // 각 타일의 배경색
 
   void _toggleTheme(String theme) {
@@ -44,22 +57,14 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
     final FirebaseStoreService _firebaseStore = FirebaseStoreService();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      _firebaseStore.updateProfileField(user.uid, {'theme': _selectedThemes});
+      final translatedThemes = _selectedThemes.map((e) => themeTranslation[e]).toList();
+      _firebaseStore.updateProfileField(user.uid, {'theme': translatedThemes});
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const TalkScreen()));
     } else {
       throw Exception('No user currently found');
     }
   }
-
-  // void _toggleBackgroundColor() {
-  //   setState(() {
-  //     // 배경색이 현재 설정된 색과 다른 색으로 토글
-  //     backgroundColor = backgroundColor == const Color(0xFF0D427F)
-  //         ? Color(0xFFA3C4D6)
-  //         : const Color(0xFF0D427F);
-  //   });
-  // }
 
   // 각 타일의 제목
   Widget _themeCardWidget(String theme, bool isSelected) {
@@ -100,16 +105,6 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
         // backgroundColor: const Color(0xFFC4E6F3),
       ),
       body: Container(
-        // decoration: const BoxDecoration(
-        //   gradient: LinearGradient(
-        //     begin: Alignment.bottomLeft,
-        //     end: Alignment.topRight,
-        //     colors: [
-        //       Colors.black,
-        //       Colors.lightBlue,
-        //     ],
-        //   ),
-        // ),
         child: SingleChildScrollView(
           child: Column(
             children: [
