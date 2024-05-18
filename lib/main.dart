@@ -28,8 +28,8 @@ class App extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     GoRouter router = GoRouter(
-      // initialLocation: '/login',
-      initialLocation: '/',
+      initialLocation: '/login',
+      //initialLocation: '/',
       routes: [
         GoRoute(
           path: '/login',
@@ -73,8 +73,8 @@ class App extends ConsumerWidget {
         if (state.matchedLocation == '/login' && isLoggedIn) {
           return isFirstLoginCompleted ? '/' : '/name_set';
         } else if (!isLoggedIn) {
-          // return '/login';
-          return '/';
+          return '/login';
+          //return '/';
         }
 
         return null;
@@ -94,18 +94,18 @@ class App extends ConsumerWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color(0xFF003168),
-          secondary: Color(0xFF8A91A1),
-          tertiary: Color(0xFFA189A4),
+          seedColor: const Color(0xFF003168),
+          secondary: const Color(0xFF8A91A1),
+          tertiary: const Color(0xFFA189A4),
           brightness: Brightness.light,
         ),
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Color(0xFF003168),
-          secondary: Color(0xFF8A91A1),
-          tertiary: Color(0xFFA189A4),
+          seedColor: const Color(0xFF003168),
+          secondary: const Color(0xFF8A91A1),
+          tertiary: const Color(0xFFA189A4),
           brightness: Brightness.dark,
         ),
         brightness: Brightness.dark,
