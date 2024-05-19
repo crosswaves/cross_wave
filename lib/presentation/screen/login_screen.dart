@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/intro_name_screen.dart';
@@ -14,10 +15,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   @override
   Widget build(BuildContext context) {
-    final _authService = FirebaseAuthService();
+    final authService = FirebaseAuthService();
 
     return Scaffold(
       body: Container(
@@ -33,12 +33,8 @@ class _LoginState extends State<Login> {
         ),
         child: Column(
           children: [
-            const SizedBox(
-              height: 75,
-            ),
-            const Image(
-              image: AssetImage('assets/logo.png'),
-            ),
+            const SizedBox(height: 75),
+            const Image(image: AssetImage('assets/logo.png')),
             Container(
               width: 250,
               height: 250,
@@ -48,66 +44,20 @@ class _LoginState extends State<Login> {
               ),
               child: TextButton(
                 onPressed: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  final isFirstLogin = prefs.getBool('isFirstLogin') ?? true;
-                  final FirebaseAuthService authService = FirebaseAuthService();
-
-                  User? user = await authService.signInWithGoogle();
+                  User? user = await authService.checkAndCreateUserProfile();
                   if (user != null) {
-                    print('로그인 성공: ${user.displayName}님 환영합니다!;');
-                    if (isFirstLogin) {
-                      // 첫 로그인 시 IntroNameScreen으로 이동
-                      Navigator.push(
+                    // 기존 사용자인 경우 HomeScreen으로 이동
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const IntroNameScreen(),
-                        ),
-                      );
-                      await prefs.setBool('isFirstLogin', false);
-                    } else {
-                      // 두 번째 로그인 시 바로 HomeScreen으로 이동
-                      Navigator.push(
+                            builder: (context) => const HomeScreen()));
+                  } else {
+                    // 신규 사용자 또는 로그인 취소/실패한 경우 IntroNameScreen으로 이동
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                      );
-                    }
+                            builder: (context) => const IntroNameScreen()));
                   }
-
-                  // final prefs = await SharedPreferences.getInstance();
-                  // final isFirstLogin = prefs.getBool('isFirstLogin') ?? true;
-                  //
-                  // // 구글 로그인 메서드
-                  // // if (isFirstLogin) {
-                  // User? user = await _authService.signInWithGoogle();
-                  // if (user != null) {
-                  //   print('로그인 성공: ${user.displayName}님 환영합니다!;');
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => const IntroNameScreen(),
-                  //     ),
-                  //   );
-                  // }
-
-                  // 첫 로그인 시 NameSetScreen으로 이동
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => const IntroNameScreen(),
-                  //     ),
-                  //   );
-                  //   await prefs.setBool('isFirstLogin', false);
-                  // } else {
-                  //   // 두 번째 로그인 시 바로 HomeScreen으로 이동
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => const HomeScreen(),
-                  //     ),
-                  //   );
-                  // }
                 },
                 child: const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -120,9 +70,7 @@ class _LoginState extends State<Login> {
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
+                    SizedBox(height: 5),
                     Icon(
                       Icons.login,
                       size: 50,
