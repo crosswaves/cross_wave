@@ -1,5 +1,7 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_speak_talk/presentation/screen/talk_screen.dart';
 
 import '../../utils/firebase_store.dart';
@@ -16,6 +18,50 @@ class SelectThemeScreen extends StatefulWidget {
 }
 
 class _SelectThemeScreenState extends State<SelectThemeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    // 현재 화면이 SelectThemeScreen 화면인지 확인
+    if (ModalRoute.of(context)?.isCurrent ?? false) {
+      _showExitConfirmationDialog();
+      return true;
+    }
+    return false; // 다른 화면에서는 기본 동작을 수행 (뒤로 가기)
+  }
+
+  void _showExitConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('앱 종료'),
+        content: const Text('앱을 종료하시겠습니까?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('아니요'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+              SystemNavigator.pop();
+            },
+            child: const Text('예'),
+          ),
+        ],
+      ),
+    );
+  }
+
   final List<String> _selectedThemes = [];
   final themeList = [
     '커리어',
@@ -49,7 +95,7 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
         _selectedThemes.remove(theme);
       } else {
         if (_selectedThemes.length < 3) {
-        _selectedThemes.add(theme);
+          _selectedThemes.add(theme);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -62,11 +108,12 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
   }
 
   void _saveTheme() {
-    final FirebaseStoreService _firebaseStore = FirebaseStoreService();
+    final FirebaseStoreService firebaseStore = FirebaseStoreService();
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      final translatedThemes = _selectedThemes.map((e) => themeTranslation[e]).toList();
-      _firebaseStore.updateProfileField(user.uid, {'theme': translatedThemes});
+      final translatedThemes =
+          _selectedThemes.map((e) => themeTranslation[e]).toList();
+      firebaseStore.updateProfileField(user.uid, {'theme': translatedThemes});
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const TalkScreen()));
     } else {
@@ -94,7 +141,9 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
-                color: isSelected ? const Color(0xFFA3C4D6) : const Color(0xFF0D427F),
+                color: isSelected
+                    ? const Color(0xFFA3C4D6)
+                    : const Color(0xFF0D427F),
               ),
             ),
           ),
@@ -145,23 +194,23 @@ class _SelectThemeScreenState extends State<SelectThemeScreen> {
                     ),
                   ),
                   Text(
-                    '1가지 이상', style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? Colors.yellow
-                        : Colors.deepOrangeAccent,
-                    ),
-                  ),
-                  const Text(
-                    '선택해 주세요. ',
+                    '1가지 이상',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                    )
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.yellow
+                          : Colors.deepOrangeAccent,
+                    ),
                   ),
+                  const Text('선택해 주세요. ',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      )),
                   const Text(
-                    '내가 원하는 주제로 대화할 수 있어요!',style: TextStyle(
+                    '내가 원하는 주제로 대화할 수 있어요!',
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
