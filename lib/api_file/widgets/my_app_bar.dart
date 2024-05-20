@@ -6,7 +6,9 @@ import 'theme_switch.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MyAppBar({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const MyAppBar({super.key, required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   void _showInputDialog(BuildContext context) {
     showDialog(
-      context: context,
+      context: scaffoldKey.currentContext!,
       builder: (BuildContext context) {
         String userInput = '';
         return AlertDialog(
@@ -60,7 +62,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop(); // 팝업 닫기
-                await _translateAndShowOutputDialog(context, userInput); // 번역 및 결과 출력
+                await _translateAndShowOutputDialog(userInput); // 번역 및 결과 출력
               },
               child: const Text("확인"),
             ),
@@ -70,35 +72,34 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Future<void> _translateAndShowOutputDialog(BuildContext context, String userInput) async {
+  Future<void> _translateAndShowOutputDialog(String userInput) async {
     AiTranslate aiTranslate = AiTranslate();
     String translatedText = await aiTranslate.getResponse(userInput);
 
     debugPrint('Translated Text: $translatedText'); // 디버깅 메시지 추가
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => AlertDialog(
-          title: const Text("결과"),
-          content: Text(translatedText),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: translatedText));
-                ScaffoldMessenger.maybeOf(Scaffold.of(context) as BuildContext)?.showSnackBar(
-                  const SnackBar(content: Text("텍스트가 클립보드에 복사되었습니다.")),
-                );
-              },
-              child: const Text("복사"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // 팝업 닫기
-              },
-              child: const Text("닫기"),
-            ),
-          ],
-        ),
+    showDialog(
+      context: scaffoldKey.currentContext!,
+      builder: (context) => AlertDialog(
+        title: const Text("번역 결과"),
+        content: Text(translatedText),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: translatedText));
+              ScaffoldMessenger.of(scaffoldKey.currentContext!).showSnackBar(
+                const SnackBar(content: Text("텍스트가 클립보드에 복사되었습니다.")),
+              );
+            },
+            child: const Text("복사"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // 팝업 닫기
+            },
+            child: const Text("닫기"),
+          ),
+        ],
       ),
     );
   }
