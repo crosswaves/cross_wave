@@ -23,7 +23,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final FirebaseStoreService _firebaseStoreService = FirebaseStoreService();
   final WeeklyMessageCounter _weeklyMessageCounter = WeeklyMessageCounterImpl();
   late List<Widget> _widgetOptions;
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   // bool _isDarkMode = false;
 
   // 레벨설정
-  String _getImageForLevel (String level) {
+  String _getImageForLevel(String level) {
     switch (level) {
       case 'Gold':
         return 'assets/gold.png';
@@ -100,17 +101,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     BackButtonInterceptor.add(myInterceptor);
   }
 
-
-
   // 애니메이션 효과 / 초기화
   void _initializeAnimationController() {
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
     );
 
     _animation = Tween<Offset>(
-      begin: Offset(-1.0, 0.0),
+      begin: const Offset(-1.0, 0.0),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
@@ -130,10 +129,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
-
   bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
-    _showExitConfirmationDialog();
-    return true;
+    // 현재 인덱스가 0 (홈 화면)이고, 현재 라우트가 활성화된 상태인지 확인
+    if (_selectedIndex == 0 && ModalRoute.of(context)?.isCurrent == true) {
+      _showExitConfirmationDialog();
+      return true; // 이벤트 중단 및 팝업 표시
+    }
+    return false; // 다른 화면에서는 기본 동작 수행
   }
 
   void _showExitConfirmationDialog() {
@@ -220,7 +222,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         },
                         child: CircleAvatar(
                           backgroundImage:
-                          NetworkImage(snapshot.data!.profilePicture ?? ''),
+                              NetworkImage(snapshot.data!.profilePicture ?? ''),
                           radius: 20,
                           backgroundColor: Colors.red,
                         ),
@@ -293,12 +295,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading:
-                  const Icon(Icons.dark_mode),
+                  leading: const Icon(Icons.dark_mode),
                   title: const Text('다크모드'),
                   onTap: () {
                     setState(
-                          () {
+                      () {
                         _selectedDrawerItem = 'Item 1';
                       },
                     );
@@ -354,16 +355,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                           const SizedBox(width: 10),
                           Row(
                             children: [
-                              SizedBox(width: 20),
-                              Lottie.asset('assets/lottie/lottie_welcome.json', width: 100, height: 100),
-                              SizedBox(width: 30),
+                              const SizedBox(width: 20),
+                              Lottie.asset('assets/lottie/lottie_welcome.json',
+                                  width: 100, height: 100),
+                              const SizedBox(width: 30),
                               Column(
                                 children: [
                                   Text(
                                     '${snapshot.data!.name} 님',
                                     style: const TextStyle(fontSize: 32),
                                   ),
-                                  Text('반가워요!',style: const TextStyle(fontSize: 32))
+                                  const Text('반가워요!',
+                                      style: TextStyle(fontSize: 32))
                                 ],
                               ),
                             ],
@@ -414,7 +417,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               width: 350,
                               height: 10,
                               child: LinearProgressIndicator(
-                                value: snapshot.data!.remainingChats / snapshot.data!.maxChats,
+                                value: snapshot.data!.remainingChats /
+                                    snapshot.data!.maxChats,
                                 backgroundColor: Colors.black,
                               ),
                             ),
@@ -431,20 +435,22 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ),
                       ),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => IntroLevelScreen(name: snapshot.data!.name ?? '')),
+                                builder: (context) => IntroLevelScreen(
+                                    name: snapshot.data!.name ?? '')),
                           );
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.all(15),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).brightness == Brightness.dark
-                                ? const Color(0xFF2C2C2C)
-                                : const Color(0xFFEFF3F7),
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? const Color(0xFF2C2C2C)
+                                    : const Color(0xFFEFF3F7),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
@@ -459,7 +465,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   Image(
                                     width: 30,
                                     height: 30,
-                                    image: AssetImage(_getImageForLevel(snapshot.data!.level)),
+                                    image: AssetImage(_getImageForLevel(
+                                        snapshot.data!.level)),
                                   ),
                                 ],
                               ),
@@ -480,7 +487,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                  const TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
+                                      const TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
                             );
                           },
                           child: const Text(
