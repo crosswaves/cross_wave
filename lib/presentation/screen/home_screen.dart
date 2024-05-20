@@ -35,9 +35,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   // 애니메이션 효과
   late AnimationController _controller;
   late Animation<Offset> _animation;
-
-  String _selectedDrawerItem = 'Item 1';
-
   // 다크모드
   // bool _isDarkMode = false;
 
@@ -400,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                   width: 200,
                                   height: 25,
                                   child: Text(
-                                    '(${snapshot.data!.remainingChats} / 5)',
+                                    '(${snapshot.data!.remainingChats} / ${snapshot.data!.maxChats})',
                                     style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
@@ -414,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                               width: 350,
                               height: 10,
                               child: LinearProgressIndicator(
-                                value: snapshot.data!.remainingChats / 5,
+                                value: snapshot.data!.remainingChats / snapshot.data!.maxChats,
                                 backgroundColor: Colors.black,
                               ),
                             ),
