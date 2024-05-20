@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speak_talk/presentation/screen/intro_name_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../utils/firebase_service.dart';
 import 'home_screen.dart';
 
@@ -33,51 +30,51 @@ class _LoginState extends State<Login> {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 75),
+            const SizedBox(height: 150),
             const Image(image: AssetImage('assets/logo.png')),
+            const SizedBox(height: 50),
             Container(
               width: 250,
-              height: 250,
+              height: 50,
               decoration: const BoxDecoration(
                 color: Color(0xFFECE6CC),
                 shape: BoxShape.circle,
               ),
-              child: TextButton(
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.white,
+                  minimumSize: const Size(250, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                icon: const Image(
+                  image: AssetImage('assets/google.png'),
+                  height: 24,
+                ),
+                label: const Text(
+                  'Google 로그인',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
                 onPressed: () async {
                   User? user = await authService.checkAndCreateUserProfile();
                   if (user != null) {
-                    // 기존 사용자인 경우 HomeScreen으로 이동
+                    // Existing user, navigate to HomeScreen
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const HomeScreen()));
                   } else {
-                    // 신규 사용자 또는 로그인 취소/실패한 경우 IntroNameScreen으로 이동
+                    // New user or login canceled/failed, navigate to IntroNameScreen
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const IntroNameScreen()));
                   }
                 },
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Google 로그인',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Icon(
-                      Icons.login,
-                      size: 50,
-                      color: Colors.deepPurpleAccent,
-                    ),
-                  ],
-                ),
               ),
             ),
           ],
