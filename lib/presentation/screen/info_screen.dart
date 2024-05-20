@@ -197,10 +197,13 @@ class InfoScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     '이름 : $name',
                     style: const TextStyle(fontSize: 22),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                   IconButton(
                     onPressed: () {
