@@ -21,7 +21,7 @@ class TalkScreen extends StatefulWidget {
 
 class _TalkScreenState extends State<TalkScreen> {
   late Offset _floatingButtonPosition;
-  GlobalKey _draggableKey = GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late final Future<Profile> profileFuture;
 
   @override
@@ -40,7 +40,8 @@ class _TalkScreenState extends State<TalkScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const MyAppBar(),
+      key: _scaffoldKey, // 여기에 키를 설정합니다.
+      appBar: MyAppBar(scaffoldKey: _scaffoldKey), // 키를 MyAppBar에 전달합니다.
       body: Consumer(
         builder: (context, ref, child) {
           final List<ChatModel> chats =
@@ -75,7 +76,6 @@ class _TalkScreenState extends State<TalkScreen> {
             left: _floatingButtonPosition.dx,
             top: _floatingButtonPosition.dy,
             child: Draggable(
-              key: _draggableKey,
               feedback: FloatingActionButton(
                 onPressed: () {},
                 child: const Icon(Icons.phone, color: Colors.red), // 전화 아이콘
@@ -128,7 +128,7 @@ class _TalkScreenState extends State<TalkScreen> {
 
     if (confirmExit == true) {
       final List<ChatModel> chats =
-          ProviderScope.containerOf(context).read(chatsProvider);
+      ProviderScope.containerOf(context).read(chatsProvider);
       String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
 
       if (chats.isNotEmpty) {

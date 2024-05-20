@@ -8,7 +8,7 @@ import '../../domain/model/conversation_history.dart';
 import 'home_screen.dart';
 
 class TalkArchiveScreen extends StatelessWidget {
-  const TalkArchiveScreen({Key? key});
+  const TalkArchiveScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class TalkArchiveScreen extends StatelessWidget {
 class ConversationListScreen extends StatefulWidget {
   final List<ConversationHistory> conversations;
 
-  const ConversationListScreen({Key? key, required this.conversations});
+  const ConversationListScreen({super.key, required this.conversations});
 
   @override
   _ConversationListScreenState createState() => _ConversationListScreenState();
@@ -88,14 +88,17 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
                   final conversation = widget.conversations[index];
                   return Card(
                     child: ListTile(
-                      title: Text(conversation.previewMessage),
+                      title: Text(
+                        conversation.previewMessage.length > 150 // 최대 길이 설정
+                            ? '${conversation.previewMessage.substring(0, 150)}...' // 최대 길이를 초과할 경우 생략 부호 추가
+                            : conversation.previewMessage,
+                      ),
                       subtitle: Text(DateFormat('yyyy년 MM월 dd일 HH시 mm분')
                           .format(conversation.startTime.toLocal())),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () {
-                          _confirmDeleteConversation(
-                              context, conversation.id);
+                          _confirmDeleteConversation(context, conversation.id);
                         },
                       ),
                       onTap: () {
@@ -137,16 +140,14 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("대화 삭제"),
-          content: const Text(
-              "해당 대화 내용을 삭제하시겠습니까? 삭제 이후에는 대화 내역을 되돌릴 수 없습니다."),
+          content: const Text("해당 대화 내용을 삭제하시겠습니까? 삭제 이후에는 대화 내역을 되돌릴 수 없습니다."),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(true), // "YES"를 선택한 경우
               child: const Text("YES"),
             ),
             TextButton(
-              onPressed: () =>
-                  Navigator.of(context).pop(false), // "NO"를 선택한 경우
+              onPressed: () => Navigator.of(context).pop(false), // "NO"를 선택한 경우
               child: const Text("NO"),
             ),
           ],
@@ -190,8 +191,8 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
               onTap: () {
                 setState(() {
                   _currentSortOption = SortOption.recent;
-                  widget.conversations.sort((a, b) =>
-                      b.startTime.compareTo(a.startTime));
+                  widget.conversations
+                      .sort((a, b) => b.startTime.compareTo(a.startTime));
                   Navigator.pop(context);
                 });
               },
@@ -201,8 +202,8 @@ class _ConversationListScreenState extends State<ConversationListScreen> {
               onTap: () {
                 setState(() {
                   _currentSortOption = SortOption.oldest;
-                  widget.conversations.sort((a, b) =>
-                      a.startTime.compareTo(b.startTime));
+                  widget.conversations
+                      .sort((a, b) => a.startTime.compareTo(b.startTime));
                   Navigator.pop(context);
                 });
               },
