@@ -47,7 +47,8 @@ class FirebaseAuthService {
           'level': 'Iron',
           'weeklyProgress': 0,
           'dailyProgress': 0,
-          'remainingChats': 5,
+          'remainingChats': 15,
+          'maxChats': 15,
           'theme': ['life'],
         });
         return null; // 신규 프로필 생성 후 null 반환하여 IntroNameScreen으로 유도
