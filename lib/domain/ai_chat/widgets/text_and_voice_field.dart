@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
-import '../../domain/model/profile.dart';
+import '../../model/profile.dart';
 import '../models/chat_model.dart';
 import '../providers/chats_provider.dart';
 import '../services/ai_handler.dart';

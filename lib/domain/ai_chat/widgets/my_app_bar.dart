@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../domain/model/ai_translate.dart';
+import '../../model/ai_translate.dart';
 import '../providers/active_theme_provider.dart';
 import 'theme_switch.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +19,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         Row(
           children: [
             IconButton(
-              icon: const Icon(Icons.live_help_outlined),
+              icon: const Icon(Icons.live_help_outlined, color: Colors.deepOrangeAccent,),
               onPressed: () {
                 _showInputDialog(context);
               },
