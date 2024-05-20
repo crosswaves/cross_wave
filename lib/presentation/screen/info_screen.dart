@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/model/profile.dart';
 import '../../utils/firebase_service.dart';
 import '../../utils/firebase_store.dart';
+import 'info_pay_screen.dart';
 import 'license.dart';
 import 'login_screen.dart';
 import 'package:intl/intl.dart';
@@ -110,7 +111,7 @@ class InfoScreen extends StatelessWidget {
                     ListView.separated(
                       shrinkWrap: true,
                       // ListView의 높이를 감싸는 콘텐츠에 맞춥니다.
-                      itemCount: 4,
+                      itemCount: 5,
                       // 항목 개수
                       separatorBuilder: (context, index) => const Divider(),
                       // 구분선 추가
@@ -119,7 +120,8 @@ class InfoScreen extends StatelessWidget {
                           '요금제 업그레이드',
                           '개인정보 처리방침',
                           '라이선스',
-                          '로그아웃'
+                          '로그아웃',
+                          '회원탈퇴'
                         ][index];
                         return InkWell(
                           onTap: () {
@@ -140,7 +142,18 @@ class InfoScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) => const LicenseScreen()),
                               );
+                            } else if (index == 4) {
+                              // 회원탈퇴 메서드
+                              deleteAccount(context);
+                            } else if (index == 0) {
+                              // 요금제 업그레이드 페이지 이동
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const InfoPayScreen()),
+                              );
                             }
+
                           },
                           child: Container(
                             decoration: const BoxDecoration(
@@ -254,6 +267,7 @@ class InfoScreen extends StatelessWidget {
   //   return null;
   // }
 
+
   void logout(BuildContext context) async {
     final prefs =
         await SharedPreferences.getInstance(); // 1. SharedPreferences 인스턴스 가져오기
@@ -272,5 +286,38 @@ class InfoScreen extends StatelessWidget {
       context,
       MaterialPageRoute(builder: (context) => const Login()),
     );
+  }
+
+  // 회원탈퇴 메서드
+  void deleteAccount(BuildContext context) async {
+    final firebaseStore = FirebaseStoreService(); // FirebaseStore 인스턴스를 생성합니다.
+    final prefs = await SharedPreferences.getInstance(); // SharedPreferences 인스턴스를 가져옵니다.
+
+    try {
+      await firebaseStore.deleteProfile(); // Firebase Firestore에서 프로필을 삭제합니다.
+      await _authService.signOut(); // Firebase Authentication에서 로그아웃합니다.
+
+      await prefs.setBool('isFirstLogin', true); // 'isFirstLogin' 값을 true로 설정하여 첫 번째 로그인 상태로 변경합니다.
+
+      // 로그아웃 메시지를 표시합니다.
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("회원 탈퇴가 완료되었습니다."),
+        ),
+      );
+
+      // 로그인 페이지로 이동합니다. (Navigator.pushReplacement를 사용하여 기존 페이지 스택을 유지하지 않습니다.)
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Login()),
+      );
+    } catch (e) {
+      // 에러 메시지를 표시합니다.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("회원 탈퇴 중 오류가 발생했습니다: $e"),
+        ),
+      );
+    }
   }
 }
