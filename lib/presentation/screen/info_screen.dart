@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/model/profile.dart';
 import '../../utils/firebase_service.dart';
 import '../../utils/firebase_store.dart';
+import 'license.dart';
 import 'login_screen.dart';
 import 'package:intl/intl.dart';
 
@@ -134,11 +135,11 @@ class InfoScreen extends StatelessWidget {
                               );
                             } else if (index == 2) {
                               // 라이선스 터치시
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => const UpgradeScreen()),
-                              // );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LicenseScreen()),
+                              );
                             }
                           },
                           child: Container(
