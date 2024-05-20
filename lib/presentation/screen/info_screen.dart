@@ -196,24 +196,30 @@ class InfoScreen extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text('이름 :',style: const TextStyle(fontSize: 18),),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    '이름 : $name',
-                    style: const TextStyle(fontSize: 22),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                  Flexible(
+                    child: Text(
+                      '$name',
+                      style: const TextStyle(fontSize: 22),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const IntroNameScreen()));
-                    },
-                    icon: const Icon(Icons.edit),
-                    iconSize: 15,
+                  Flexible(
+                    child: IconButton(
+                      alignment: Alignment.centerLeft,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const IntroNameScreen()));
+                      },
+                      icon: const Icon(Icons.edit),
+                      iconSize: 15,
+                    ),
                   ),
                 ],
               ),
