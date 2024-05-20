@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/model/profile.dart';
+import '../../model/profile.dart';
+
 
 class ChatItem extends StatelessWidget {
   final String text;

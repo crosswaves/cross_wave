@@ -4,9 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_screen.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_speak_talk/auth_utils.dart';
+import 'package:flutter_speak_talk/utils/auth_utils.dart';
 import 'package:flutter_speak_talk/presentation/screen/login_screen.dart';
-import 'firebase_options.dart';
+import 'utils/firebase_options.dart';
 import 'presentation/screen/home_screen.dart';
 import 'presentation/screen/intro_level_screen.dart';
 import 'presentation/screen/intro_name_screen.dart';
@@ -18,7 +18,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await dotenv.load(fileName: '.env');
   runApp(const ProviderScope(child: App()));
 }
 
@@ -27,10 +26,8 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     GoRouter router = GoRouter(
       initialLocation: '/login',
-      // initialLocation: '/',
       routes: [
         GoRoute(
           path: '/login',
@@ -75,9 +72,7 @@ class App extends ConsumerWidget {
           return isFirstLoginCompleted ? '/' : '/name_set';
         } else if (!isLoggedIn) {
           return '/login';
-          // return '/';
         }
-
         return null;
       },
     );
@@ -89,10 +84,6 @@ class App extends ConsumerWidget {
       routeInformationParser: router.routeInformationParser,
       routeInformationProvider: router.routeInformationProvider,
       debugShowCheckedModeBanner: false,
-      // themeMode: activeTheme == Themes.dark ? ThemeMode.dark : ThemeMode.light,
-      // theme: lightTheme,
-      // darkTheme: darkTheme,
-      // theme: theme,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

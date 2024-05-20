@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speak_talk/presentation/screen/home_screen.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
-import '../../api_file/models/chat_model.dart';
-import '../../api_file/providers/chats_provider.dart';
-import '../../api_file/widgets/chat_item.dart';
-import '../../api_file/widgets/my_app_bar.dart';
-import '../../api_file/widgets/text_and_voice_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../domain/ai_chat/models/chat_model.dart';
+import '../../domain/ai_chat/providers/chats_provider.dart';
+import '../../domain/ai_chat/widgets/chat_item.dart';
+import '../../domain/ai_chat/widgets/my_app_bar.dart';
+import '../../domain/ai_chat/widgets/text_and_voice_field.dart';
 import '../../domain/model/profile.dart';
 
 class TalkScreen extends StatefulWidget {
