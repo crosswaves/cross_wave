@@ -2,12 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speak_talk/presentation/screen/home_screen.dart';
+import 'package:flutter_speak_talk/utils/firebase_store.dart';
 import '../../api_file/models/chat_model.dart';
 import '../../api_file/providers/chats_provider.dart';
 import '../../api_file/widgets/chat_item.dart';
 import '../../api_file/widgets/my_app_bar.dart';
 import '../../api_file/widgets/text_and_voice_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../domain/model/profile.dart';
 
 class TalkScreen extends StatefulWidget {
   const TalkScreen({super.key});
@@ -18,7 +21,8 @@ class TalkScreen extends StatefulWidget {
 
 class _TalkScreenState extends State<TalkScreen> {
   late Offset _floatingButtonPosition;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey _draggableKey = GlobalKey();
+  late final Future<Profile> profileFuture;
 
   @override
   void initState() {
@@ -30,6 +34,7 @@ class _TalkScreenState extends State<TalkScreen> {
             screenSize.height - 160); // Adjust the offset as needed
       });
     });
+    profileFuture = FirebaseStoreService().readProfile();
   }
 
   @override
@@ -40,7 +45,7 @@ class _TalkScreenState extends State<TalkScreen> {
       body: Consumer(
         builder: (context, ref, child) {
           final List<ChatModel> chats =
-          ref.watch(chatsProvider).reversed.toList();
+              ref.watch(chatsProvider).reversed.toList();
           return Column(
             children: [
               Expanded(
@@ -50,6 +55,7 @@ class _TalkScreenState extends State<TalkScreen> {
                   itemBuilder: (context, index) => ChatItem(
                     text: chats[index].message,
                     isMe: chats[index].isMe,
+                    profileFuture: profileFuture,
                   ),
                 ),
               ),

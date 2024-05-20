@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/model/profile.dart';
+
 class ChatItem extends StatelessWidget {
   final String text;
   final bool isMe;
+  final Future<Profile> profileFuture;
+
   const ChatItem({
     super.key,
     required this.text,
     required this.isMe,
+    required this.profileFuture,
   });
 
   @override
@@ -21,7 +26,7 @@ class ChatItem extends StatelessWidget {
         mainAxisAlignment:
             isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
-          if (!isMe) ProfileContainer(isMe: isMe),
+          if (!isMe) ProfileContainer(isMe: isMe, profileFuture: profileFuture),
           if (!isMe) const SizedBox(width: 15),
           Container(
             padding: const EdgeInsets.all(15),
@@ -47,7 +52,7 @@ class ChatItem extends StatelessWidget {
             ),
           ),
           if (isMe) const SizedBox(width: 15),
-          if (isMe) ProfileContainer(isMe: isMe),
+          if (isMe) ProfileContainer(isMe: isMe, profileFuture: profileFuture),
         ],
       ),
     );
@@ -55,34 +60,82 @@ class ChatItem extends StatelessWidget {
 }
 
 class ProfileContainer extends StatelessWidget {
-  const ProfileContainer({
+  ProfileContainer({
     super.key,
     required this.isMe,
+    required this.profileFuture,
   });
 
   final bool isMe;
 
+  // FutureBuilder 캐싱
+  final Future<Profile> profileFuture;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        color: isMe
-            ? Theme.of(context).colorScheme.secondary
-            : Colors.grey.shade800,
-        borderRadius: BorderRadius.only(
-          topLeft: const Radius.circular(10),
-          topRight: const Radius.circular(10),
-          bottomLeft: Radius.circular(isMe ? 0 : 15),
-          bottomRight: Radius.circular(isMe ? 15 : 0),
-        ),
-      ),
-      child: Icon(
-        isMe ? Icons.person : Icons.computer,
-        color: Theme.of(context).colorScheme.onSecondary,
-      ),
+    return FutureBuilder<Profile>(
+      future: profileFuture,
+      builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (snapshot.hasData && snapshot.data != null) {
+          return Container(
+            alignment: Alignment.center,
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: isMe
+                  ? Theme.of(context).colorScheme.secondary
+                  : Colors.transparent,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(10),
+                topRight: const Radius.circular(10),
+                bottomLeft: Radius.circular(isMe ? 0 : 15),
+                bottomRight: Radius.circular(isMe ? 15 : 0),
+              ),
+              image: isMe
+                  ? DecorationImage(
+                      image: NetworkImage(snapshot.data!.profilePicture ?? ''),
+                      fit: BoxFit.cover,
+                    )
+                  // : const DecorationImage(
+                  //     image: AssetImage('assets/computer.png'),
+                  //     fit: BoxFit.cover,
+                  //   ),
+              : null,
+            ),
+            child: isMe
+                ? CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(snapshot.data!.profilePicture ?? ''),
+                    radius: 20,
+                    backgroundColor: Colors.transparent,
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(0),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.computer,
+                      color: Theme.of(context).colorScheme.onSecondary,
+                    ),
+                  ),
+          );
+        } else {
+          return const Text('데이터를 찾을 수 없습니다.');
+        }
+      },
     );
   }
 }
