@@ -14,7 +14,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: const Text('대화'),
-      automaticallyImplyLeading: false, // 뒤로가기 버튼 없애기
+      // automaticallyImplyLeading: false, // 뒤로가기 버튼 없애기
       actions: [
         Row(
           children: [

@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/model/profile.dart';
 import '../../utils/firebase_service.dart';
 import '../../utils/firebase_store.dart';
+import 'license.dart';
 import 'login_screen.dart';
 import 'package:intl/intl.dart';
 
@@ -117,7 +118,7 @@ class InfoScreen extends StatelessWidget {
                         final title = [
                           '요금제 업그레이드',
                           '개인정보 처리방침',
-                          '홈페이지 둘러보기',
+                          '라이선스',
                           '로그아웃'
                         ][index];
                         return InkWell(
@@ -131,6 +132,13 @@ class InfoScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const PrivacyPolicyScreen()),
+                              );
+                            } else if (index == 2) {
+                              // 라이선스 터치시
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const LicenseScreen()),
                               );
                             }
                           },
@@ -196,21 +204,30 @@ class InfoScreen extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text('이름 :',style: const TextStyle(fontSize: 18),),
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    '이름 : $name',
-                    style: const TextStyle(fontSize: 22),
+                  Flexible(
+                    child: Text(
+                      '$name',
+                      style: const TextStyle(fontSize: 22),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const IntroNameScreen()));
-                    },
-                    icon: const Icon(Icons.edit),
-                    iconSize: 15,
+                  Flexible(
+                    child: IconButton(
+                      alignment: Alignment.centerLeft,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const IntroNameScreen()));
+                      },
+                      icon: const Icon(Icons.edit),
+                      iconSize: 15,
+                    ),
                   ),
                 ],
               ),
