@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/intro_level_screen.dart';
+import 'package:flutter_speak_talk/presentation/screen/privacy_policy_screen.dart';
 import 'package:flutter_speak_talk/presentation/screen/select_theme_screen.dart';
 import 'package:flutter_speak_talk/utils/firebase_store.dart';
 import 'package:lottie/lottie.dart';
@@ -243,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: ListTile(
                   leading: const Icon(Icons.account_box),
-                  title: const Text('개인정보 처리약관'),
+                  title: const Text('개인정보 처리방침'),
                   onTap: () {
                     setState(() {
                       _selectedDrawerItem = 'Item 1';
@@ -251,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const InfoPayScreen()),
+                          builder: (context) => const PrivacyPolicyScreen()),
                     );
                   },
                 ),

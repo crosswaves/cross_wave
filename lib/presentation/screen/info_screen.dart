@@ -117,7 +117,7 @@ class InfoScreen extends StatelessWidget {
                         final title = [
                           '요금제 업그레이드',
                           '개인정보 처리방침',
-                          '홈페이지 둘러보기',
+                          '라이선스',
                           '로그아웃'
                         ][index];
                         return InkWell(
@@ -132,6 +132,13 @@ class InfoScreen extends StatelessWidget {
                                     builder: (context) =>
                                         const PrivacyPolicyScreen()),
                               );
+                            } else if (index == 2) {
+                              // 라이선스 터치시
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => const UpgradeScreen()),
+                              // );
                             }
                           },
                           child: Container(
