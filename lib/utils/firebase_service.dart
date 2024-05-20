@@ -43,7 +43,7 @@ class FirebaseAuthService {
           'lastSignInTime': user.metadata.lastSignInTime,
           'joinDate': user.metadata.creationTime,
           'profilePicture': user.photoURL,
-          'membershipLevel': 'Standard',
+          'membershipLevel': '일반',
           'level': 'Iron',
           'weeklyProgress': 0,
           'dailyProgress': 0,
