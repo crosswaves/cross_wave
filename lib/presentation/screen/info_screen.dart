@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../domain/model/profile.dart';
 import '../../utils/firebase_service.dart';
 import '../../utils/firebase_store.dart';
+import 'info_pay_screen.dart';
 import 'license.dart';
 import 'login_screen.dart';
 import 'package:intl/intl.dart';
@@ -144,6 +145,13 @@ class InfoScreen extends StatelessWidget {
                             } else if (index == 4) {
                               // 회원탈퇴 메서드
                               deleteAccount(context);
+                            } else if (index == 0) {
+                              // 요금제 업그레이드 페이지 이동
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const InfoPayScreen()),
+                              );
                             }
 
                           },
