@@ -21,7 +21,7 @@ class TalkScreen extends StatefulWidget {
 
 class _TalkScreenState extends State<TalkScreen> {
   late Offset _floatingButtonPosition;
-  GlobalKey _draggableKey = GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late final Future<Profile> profileFuture;
 
   @override
