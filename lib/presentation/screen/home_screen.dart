@@ -35,6 +35,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   // 애니메이션 효과
   late AnimationController _controller;
   late Animation<Offset> _animation;
+
+  String _selectedDrawerItem = 'Item 1';
+
   // 다크모드
   // bool _isDarkMode = false;
 
