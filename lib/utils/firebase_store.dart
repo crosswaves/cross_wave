@@ -57,6 +57,7 @@ class FirebaseStoreService {
       weeklyProgress: data['weeklyProgress'] as int,
       dailyProgress: data['dailyProgress'] as int,
       remainingChats: data['remainingChats'] as int,
+      maxChats: data['maxChats'] as int,
       theme: _parseThemeList(data['theme']), // int 형식 필드
     );
   }

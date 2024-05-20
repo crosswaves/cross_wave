@@ -1,7 +1,6 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_speak_talk/presentation/screen/info_pay_screen.dart';
@@ -38,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // bool _isDarkMode = false;
 
   // 레벨설정
-  String _getImageForLevel (String level) {
+  String _getImageForLevel(String level) {
     switch (level) {
       case 'Gold':
         return 'assets/gold.png';
@@ -190,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         child: CircleAvatar(
                           backgroundImage:
-                          NetworkImage(snapshot.data!.profilePicture ?? ''),
+                              NetworkImage(snapshot.data!.profilePicture ?? ''),
                           radius: 20,
                           backgroundColor: Colors.red,
                         ),
@@ -263,12 +262,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  leading:
-                  const Icon(Icons.dark_mode),
+                  leading: const Icon(Icons.dark_mode),
                   title: const Text('다크모드'),
                   onTap: () {
                     setState(
-                          () {
+                      () {
                         _selectedDrawerItem = 'Item 1';
                       },
                     );
@@ -316,16 +314,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(width: 10),
                         Row(
                           children: [
-                            SizedBox(width: 20),
-                            Lottie.asset('assets/lottie/lottie_welcome.json', width: 100, height: 100),
-                            SizedBox(width: 30),
+                            const SizedBox(width: 20),
+                            Lottie.asset('assets/lottie/lottie_welcome.json',
+                                width: 100, height: 100),
+                            const SizedBox(width: 30),
                             Column(
                               children: [
                                 Text(
                                   '${snapshot.data!.name} 님',
                                   style: const TextStyle(fontSize: 32),
                                 ),
-                                Text('반가워요!',style: const TextStyle(fontSize: 32))
+                                const Text('반가워요!',
+                                    style: TextStyle(fontSize: 32))
                               ],
                             ),
                           ],
@@ -337,7 +337,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.only(left: 15),
                       alignment: Alignment.centerLeft,
                       child: const Text('AI 채팅 잔여횟수',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          )),
                     ),
                     Container(
                       margin: const EdgeInsets.all(15),
@@ -362,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 200,
                                 height: 25,
                                 child: Text(
-                                  '(${snapshot.data!.remainingChats} / 5)',
+                                  '(${snapshot.data!.remainingChats} / ${snapshot.data!.maxChats})',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
@@ -376,7 +379,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 350,
                             height: 10,
                             child: LinearProgressIndicator(
-                              value: snapshot.data!.remainingChats / 5,
+                              value: snapshot.data!.remainingChats /
+                                  snapshot.data!.maxChats,
                               backgroundColor: Colors.black,
                             ),
                           ),
@@ -393,11 +397,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => IntroLevelScreen(name: snapshot.data!.name ?? '')),
+                              builder: (context) => IntroLevelScreen(
+                                  name: snapshot.data!.name ?? '')),
                         );
                       },
                       child: Container(
@@ -421,7 +426,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Image(
                                   width: 30,
                                   height: 30,
-                                  image: AssetImage(_getImageForLevel(snapshot.data!.level)),
+                                  image: AssetImage(
+                                      _getImageForLevel(snapshot.data!.level)),
                                 ),
                               ],
                             ),
@@ -442,7 +448,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                const TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
+                                    const TalkArchiveScreen()), // Create a MaterialPageRoute to the TalkArchiveScreen
                           );
                         },
                         child: const Text(
