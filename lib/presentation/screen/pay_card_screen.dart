@@ -1,12 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'home_screen.dart';
+import 'info_pay_screen.dart';
 
 class PayCardScreen extends StatelessWidget {
-  const PayCardScreen({super.key});
+  final MembershipType selectedMembershipType;
+
+  const PayCardScreen({super.key, required this.selectedMembershipType});
+
+  Future<void> updateMembership(String userId, String newMembershipLevel,
+      int remainingChats, int maxChats) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('profiles')
+          .doc(userId)
+          .update({
+        'membershipLevel': newMembershipLevel,
+        'remainingChats': remainingChats,
+        'maxChats': maxChats,
+      });
+    } catch (e) {
+      // 에러 처리
+      print('Failed to update membership: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // 선택된 멤버십 유형에 따라 newMembershipLevel 및 remainingChats 설정
+    String newMembershipLevel = '';
+    int remainingChats = 0;
+    int maxChats = 0;
+    switch (selectedMembershipType) {
+      case MembershipType.free:
+        newMembershipLevel = '일반';
+        remainingChats = 15;
+        maxChats = 15;
+        break;
+      case MembershipType.premium:
+        newMembershipLevel = '프리미엄';
+        remainingChats = 100;
+        maxChats = 100;
+        break;
+      case MembershipType.vip:
+        newMembershipLevel = 'VIP';
+        remainingChats = 1000;
+        maxChats = 1000;
+        break;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('결제 화면'),
@@ -51,36 +94,44 @@ class PayCardScreen extends StatelessWidget {
             const SizedBox(height: 40),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  // 결제 로직을 구현하거나 결제 확인 다이얼로그 표시
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('결제 확인'),
-                      content: const Text('결제를 진행하시겠습니까?'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('취소'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: const Text('확인'),
-                          onPressed: () {
-                            // 여기에 결제 처리 로직 추가
-                            Navigator.of(context).pop();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HomeScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  );
+                onPressed: () async {
+                  User? user = FirebaseAuth.instance.currentUser;
+                  if (user != null) {
+                    String userId = user.uid;
+                    // 결제 로직을 구현하거나 결제 확인 다이얼로그 표시
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('결제 확인'),
+                        content: const Text('결제를 진행하시겠습니까?'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('취소'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('확인'),
+                            onPressed: () async {
+                              Navigator.of(context).pop();
+                              await updateMembership(userId, newMembershipLevel,
+                                  remainingChats, maxChats);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const HomeScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    // 사용자가 인증되지 않은 경우 처리
+                    print('User not logged in');
+                  }
                 },
                 child: const Text('결제하기'),
               ),

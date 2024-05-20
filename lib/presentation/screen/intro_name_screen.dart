@@ -123,14 +123,18 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
                             Profile(
                               name: _nameController.text,
                               email: user.email,
-                              joinDate: user.metadata.creationTime ?? DateTime.now(),
-                              lastSignInTime: user.metadata.lastSignInTime ?? DateTime.now(),
-                              profilePicture: user.photoURL ?? 'https://via.placeholder.com/150',
+                              joinDate:
+                                  user.metadata.creationTime ?? DateTime.now(),
+                              lastSignInTime: user.metadata.lastSignInTime ??
+                                  DateTime.now(),
+                              profilePicture: user.photoURL ??
+                                  'https://via.placeholder.com/150',
                               membershipLevel: '일반',
                               level: 'Iron',
                               weeklyProgress: 0,
                               dailyProgress: 0,
-                              remainingChats: 5,
+                              remainingChats: 15,
+                              maxChats: 15,
                               theme: [''],
                             ),
                           );
@@ -139,7 +143,7 @@ class _IntroNameScreenState extends State<IntroNameScreen> {
                         }
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('프로필 업데이트에 실패했습니다')));
+                            const SnackBar(content: Text('프로필 업데이트에 실패했습니다')));
                         print('Failed to update profile: $e');
                       }
                       Navigator.push(

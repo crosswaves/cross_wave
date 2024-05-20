@@ -8,6 +8,7 @@ class Profile {
   int weeklyProgress;
   int dailyProgress;
   int remainingChats;
+  int maxChats;
   String? email;  // 추가된 이메일 필드
   DateTime? lastSignInTime;  // 추가된 마지막 로그인 시간 필드
   List<String>? theme;
@@ -22,6 +23,7 @@ class Profile {
     required this.weeklyProgress,
     required this.dailyProgress,
     required this.remainingChats,
+    required this.maxChats,
     required this.email,  // 생성자에 이메일 추가
     required this.lastSignInTime,  // 생성자에 마지막 로그인 시간 추가
     required this.theme,
@@ -51,6 +53,7 @@ class Profile {
       weeklyProgress: weeklyProgress ?? this.weeklyProgress,
       dailyProgress: dailyProgress ?? this.dailyProgress,
       remainingChats: remainingChats ?? this.remainingChats,
+      maxChats: maxChats ?? this.maxChats,
       email: email ?? this.email,
       lastSignInTime: lastSignInTime ?? this.lastSignInTime,
       theme: theme ?? this.theme,
@@ -81,6 +84,7 @@ class Profile {
     weeklyProgress: json['weeklyProgress'],
     dailyProgress: json['dailyProgress'],
     remainingChats: json['remainingChats'] ?? 0,
+    maxChats: json['remainingChats'] ?? 0,
     email: json['email'],  // JSON으로부터 이메일 파싱
     lastSignInTime: json['lastSignInTime'] != null ? DateTime.parse(json['lastSignInTime']) : null,  // JSON으로부터 마지막 로그인 시간 파싱
     theme: List<String>.from(json['theme'] ?? []),
