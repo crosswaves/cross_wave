@@ -70,6 +70,7 @@ class Profile {
     'weeklyProgress': weeklyProgress,
     'dailyProgress': dailyProgress,
     'remainingChats': remainingChats,
+    'maxChats': maxChats,
     'email': email,  // JSON 변환 시 이메일 추가
     'lastSignInTime': lastSignInTime?.toIso8601String(),  // JSON 변환 시 마지막 로그인 시간 추가
     'theme': theme ?? [],
@@ -85,7 +86,7 @@ class Profile {
     weeklyProgress: json['weeklyProgress'],
     dailyProgress: json['dailyProgress'],
     remainingChats: json['remainingChats'] ?? 0,
-    maxChats: json['remainingChats'] ?? 0,
+    maxChats: json['maxChats'] ?? 0,
     email: json['email'],  // JSON으로부터 이메일 파싱
     lastSignInTime: json['lastSignInTime'] != null ? DateTime.parse(json['lastSignInTime']) : null,  // JSON으로부터 마지막 로그인 시간 파싱
     theme: List<String>.from(json['theme'] ?? []),
