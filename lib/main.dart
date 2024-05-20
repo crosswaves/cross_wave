@@ -27,6 +27,7 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     GoRouter router = GoRouter(
       // initialLocation: '/login',
       initialLocation: '/',
@@ -91,6 +92,7 @@ class App extends ConsumerWidget {
       // themeMode: activeTheme == Themes.dark ? ThemeMode.dark : ThemeMode.light,
       // theme: lightTheme,
       // darkTheme: darkTheme,
+      // theme: theme,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
