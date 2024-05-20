@@ -39,6 +39,7 @@ class Profile {
     int? weeklyProgress,
     int? dailyProgress,
     int? remainingChats,
+    int? maxChats,
     String? email,
     DateTime? lastSignInTime,
     List<String>? theme,
